@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane hgap="10" vgap="10" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ViewModel.EditWordController">
+
+        <ComboBox fx:id="cbFlashcardCategory" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER">
+      <GridPane.margin>
+         <Insets top="20.0" />
+      </GridPane.margin></ComboBox>
+        <Label minWidth="60.0" text="Słowo PL:" GridPane.columnIndex="0" GridPane.rowIndex="1">
+            <GridPane.margin>
+                <Insets />
+            </GridPane.margin></Label>
+        <TextField fx:id="plWordText" GridPane.columnIndex="1" GridPane.hgrow="SOMETIMES" GridPane.rowIndex="1">
+            <GridPane.margin>
+                <Insets bottom="10.0" top="10.0" />
+            </GridPane.margin>
+      <opaqueInsets>
+         <Insets />
+      </opaqueInsets></TextField>
+
+
+        <Label fx:id="lEngWord" minWidth="60.0" text="Słowo ang:" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+        <TextField fx:id="engWordText" GridPane.columnIndex="4" GridPane.hgrow="SOMETIMES" GridPane.rowIndex="1" />
+
+        <Label minWidth="60.0" text="Zdanie PL:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <TextArea fx:id="plSentenceText" maxHeight="100" prefHeight="60" prefWidth="100" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <GridPane.margin>
+                <Insets bottom="10.0" top="10.0" />
+            </GridPane.margin></TextArea>
+
+
+        <Label fx:id="lEngSentence" minWidth="65.0" text="Zdanie ang:" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+
+        <TextArea fx:id="engSentenceText" maxHeight="100" prefHeight="60" prefWidth="100" wrapText="true" GridPane.columnIndex="4" GridPane.rowIndex="2">
+            <GridPane.margin>
+                <Insets bottom="10.0" top="10.0" />
+            </GridPane.margin></TextArea>
+
+        <Button fx:id="bAddFlashcard" alignment="CENTER" contentDisplay="CENTER" onAction="#EditFlashcard_Click" prefWidth="70.0" text="Edytuj" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+            <GridPane.margin>
+                <Insets bottom="10.0" top="10.0" />
+            </GridPane.margin></Button>
+
+        <columnConstraints>
+            <ColumnConstraints maxWidth="70" />
+            <ColumnConstraints />
+            <ColumnConstraints />
+            <ColumnConstraints maxWidth="70" />
+            <ColumnConstraints />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+        </rowConstraints>
+   <padding>
+      <Insets bottom="10.0" left="15.0" right="15.0" />
+   </padding>
+
+    </GridPane>

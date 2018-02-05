@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane hgap="10" vgap="10" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ViewModel.DeleteCategoryControler">
+
+    <ComboBox fx:id="cbFlashcardCategory" GridPane.rowIndex="0">
+      <GridPane.margin>
+         <Insets bottom="30.0" left="50.0" right="50.0" top="20.0" />
+      </GridPane.margin></ComboBox>
+
+
+    <Button fx:id="bDeleteCategory" contentDisplay="CENTER" onAction="#DeleteCategory_Click" text="Delete" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+        <GridPane.margin>
+            <Insets bottom="10.0" top="10.0" />
+        </GridPane.margin></Button>
+
+    <columnConstraints>
+
+        <ColumnConstraints />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints />
+        <RowConstraints />
+
+    </rowConstraints>
+
+</GridPane>

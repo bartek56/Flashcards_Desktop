@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioMenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.input.KeyCodeCombination?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+
+<GridPane fx:id="mainGrid" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ViewModel.MainWindowControler">
+
+    <MenuBar id="menu" prefWidth="394.0" GridPane.columnSpan="3" GridPane.rowIndex="0" StackPane.alignment="TOP_CENTER">
+    <Menu text="File">
+        <items>
+            <MenuItem fx:id="bSaveFlashcardOnGoogle" onAction="#SaveOnDataBase_Click" text="Save Flashcards">
+               <accelerator>
+                  <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+               </accelerator></MenuItem>
+
+            <MenuItem fx:id="bSaveFlashcardOnFile" onAction="#SaveOnFile_Click" text="Save on file" />
+
+            <MenuItem fx:id="bReadFlashcardFromFile" onAction="#ReadFromFile_Click" text="Read from file" />
+
+
+            <MenuItem onAction="#Exit_Click" text="Exit" />
+        </items>
+
+    </Menu>
+    <Menu fx:id="menuCategory" text="Category">
+        <items>
+            <MenuItem fx:id="bAddCategory" onAction="#AddCategory_Click" text="Add Category" />
+            <MenuItem fx:id="bDeleteCategory" onAction="#DeleteCategory_Click" text="Delete Category" />
+            <MenuItem fx:id="bEditCategory" onAction="#EditCategory_Click" text="Edit Category" />
+
+        </items>
+    </Menu>
+        <Menu text="Language">
+            <items>
+                <RadioMenuItem fx:id="eng" onAction="#Language_Click" text="English">
+               <toggleGroup>
+                  <ToggleGroup fx:id="language" />
+               </toggleGroup>
+               </RadioMenuItem>
+                <RadioMenuItem fx:id="de" onAction="#Language_Click" text="German" toggleGroup="$language">
+               </RadioMenuItem>
+                <RadioMenuItem fx:id="fr" onAction="#Language_Click" text="French" toggleGroup="$language">
+               </RadioMenuItem>
+            </items>
+        </Menu>
+
+    </MenuBar>
+
+    <GridPane fx:id="SearchBarGrid" nodeOrientation="RIGHT_TO_LEFT" prefHeight="0.0" prefWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+
+        <TextField fx:id="tfSearch" GridPane.columnIndex="0" />
+        <Label text="Wyszukiwarka" GridPane.columnIndex="1">
+         <GridPane.margin>
+            <Insets left="20.0" right="20.0" />
+         </GridPane.margin></Label>
+
+      <rowConstraints>
+         <RowConstraints fx:id="row" />
+      </rowConstraints>
+      <columnConstraints>
+         <ColumnConstraints />
+         <ColumnConstraints />
+         <ColumnConstraints />
+      </columnConstraints>
+    </GridPane>
+
+
+    <TableView fx:id="flashcardsTable" editable="true" prefHeight="400.0" prefWidth="360.0" GridPane.columnIndex="1" GridPane.hgrow="SOMETIMES" GridPane.rowIndex="2" GridPane.vgrow="SOMETIMES">
+        <contextMenu>
+            <ContextMenu fx:id="menu">
+                <items>
+                    <MenuItem onAction="#EditFlaschcard_Click" text="Edit Flashcard" />
+                    <MenuItem onAction="#DeleteFlaschcard_Click" text="Delete Flashcard" />
+                    <MenuItem onAction="#SearchWord_Click" text="Search">
+                        <accelerator>
+                            <KeyCodeCombination alt="UP" code="F" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                        </accelerator>
+                    </MenuItem>
+                </items>
+            </ContextMenu>
+        </contextMenu>
+        <columns>
+            <TableColumn fx:id="idColumn" maxWidth="100" minWidth="30" text="id">
+                <cellValueFactory>
+                    <PropertyValueFactory property="id" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="plWordColumn" text="Słowo PL">
+                <cellValueFactory>
+                    <PropertyValueFactory property="plWord" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="engWordColumn" text="Słowo ENG">
+                <cellValueFactory>
+                    <PropertyValueFactory property="engWord" />
+                </cellValueFactory>
+
+            </TableColumn>
+            <TableColumn fx:id="plSentenceColumn" text="Zdanie PL">
+                <cellValueFactory>
+                    <PropertyValueFactory property="plSentence" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="engSentenceColumn" text="Zdanie ENG">
+                <cellValueFactory>
+                    <PropertyValueFactory property="engSentence" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn fx:id="category" text="Kategoria">
+                <cellValueFactory>
+                    <PropertyValueFactory property="category" />
+                </cellValueFactory>
+            </TableColumn>
+        </columns>
+
+      <GridPane.margin>
+         <Insets />
+      </GridPane.margin>
+      <columnResizePolicy>
+         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+      </columnResizePolicy>
+
+    </TableView>
+
+
+    <GridPane alignment="TOP_CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3">
+
+        <ComboBox fx:id="cbFlashcardCategory" minWidth="70.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER">
+         <GridPane.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </GridPane.margin></ComboBox>
+        <Label minWidth="60.0" text="Słowo PL:" GridPane.columnIndex="0" GridPane.rowIndex="1">
+         <GridPane.margin>
+            <Insets right="5.0" />
+         </GridPane.margin></Label>
+        <TextField fx:id="plWordText" GridPane.columnIndex="1" GridPane.hgrow="SOMETIMES" GridPane.rowIndex="1">
+         <GridPane.margin>
+            <Insets bottom="10.0" top="10.0" />
+         </GridPane.margin></TextField>
+
+        <Label fx:id="lEnglishWord" minWidth="60.0" text="Słowo ang:" GridPane.columnIndex="3" GridPane.rowIndex="1">
+         <GridPane.margin>
+            <Insets right="5.0" />
+         </GridPane.margin></Label>
+        <TextField fx:id="engWordText" GridPane.columnIndex="4" GridPane.hgrow="SOMETIMES" GridPane.rowIndex="1" />
+
+
+
+
+        <Label minWidth="60.0" text="Zdanie PL:" GridPane.columnIndex="0" GridPane.rowIndex="2">
+         <GridPane.margin>
+            <Insets right="5.0" />
+         </GridPane.margin></Label>
+        <TextArea fx:id="plSentenceText" maxHeight="100" prefHeight="60" prefWidth="100" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="2">
+         <GridPane.margin>
+            <Insets bottom="10.0" top="10.0" />
+         </GridPane.margin></TextArea>
+
+
+        <Label fx:id="lEnglishSentence" minWidth="65.0" text="Zdanie ang:" GridPane.columnIndex="3" GridPane.rowIndex="2">
+         <GridPane.margin>
+            <Insets right="5.0" />
+         </GridPane.margin></Label>
+
+        <TextArea fx:id="engSentenceText" maxHeight="100" prefHeight="60" prefWidth="100" wrapText="true" GridPane.columnIndex="4" GridPane.hgrow="SOMETIMES" GridPane.rowIndex="2">
+         <GridPane.margin>
+            <Insets bottom="10.0" top="10.0" />
+         </GridPane.margin></TextArea>
+
+        <Button fx:id="bAddFlashcard" alignment="CENTER" contentDisplay="CENTER" onAction="#AddFlashcard_Click" text="Dodaj" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+         <GridPane.margin>
+            <Insets bottom="10.0" top="10.0" />
+         </GridPane.margin></Button>
+
+        <columnConstraints>
+            <ColumnConstraints />
+            <ColumnConstraints />
+            <ColumnConstraints />
+            <ColumnConstraints />
+            <ColumnConstraints />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+        </rowConstraints>
+      
+    </GridPane>
+
+
+
+   <columnConstraints>
+      <ColumnConstraints />
+      <ColumnConstraints />
+       <ColumnConstraints />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+      <RowConstraints />
+       <RowConstraints />
+       <RowConstraints />
+   </rowConstraints>
+
+
+</GridPane>
