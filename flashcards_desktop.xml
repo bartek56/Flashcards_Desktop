@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="flashcards_desktop" default="all">
+  
+  
+  <property file="flashcards_desktop.properties"/>
+  <!-- Uncomment the following property if no tests compilation is needed -->
+  <!-- 
+  <property name="skip.tests" value="true"/>
+   -->
+  
+  <!-- Compiler options -->
+  
+  <property name="compiler.debug" value="on"/>
+  <property name="compiler.generate.no.warnings" value="off"/>
+  <property name="compiler.args" value=""/>
+  <property name="compiler.max.memory" value="700m"/>
+  <patternset id="ignored.files">
+    <exclude name="**/*.hprof/**"/>
+    <exclude name="**/*.pyc/**"/>
+    <exclude name="**/*.pyo/**"/>
+    <exclude name="**/*.rbc/**"/>
+    <exclude name="**/*.yarb/**"/>
+    <exclude name="**/*~/**"/>
+    <exclude name="**/.DS_Store/**"/>
+    <exclude name="**/.git/**"/>
+    <exclude name="**/.hg/**"/>
+    <exclude name="**/.svn/**"/>
+    <exclude name="**/CVS/**"/>
+    <exclude name="**/__pycache__/**"/>
+    <exclude name="**/_svn/**"/>
+    <exclude name="**/vssver.scc/**"/>
+    <exclude name="**/vssver2.scc/**"/>
+  </patternset>
+  <patternset id="library.patterns">
+    <include name="*.war"/>
+    <include name="*.swc"/>
+    <include name="*.apk"/>
+    <include name="*.zip"/>
+    <include name="*.egg"/>
+    <include name="*.ane"/>
+    <include name="*.jar"/>
+    <include name="*.ear"/>
+  </patternset>
+  <patternset id="compiler.resources">
+    <exclude name="**/?*.java"/>
+    <exclude name="**/?*.form"/>
+    <exclude name="**/?*.class"/>
+    <exclude name="**/?*.groovy"/>
+    <exclude name="**/?*.scala"/>
+    <exclude name="**/?*.flex"/>
+    <exclude name="**/?*.kt"/>
+    <exclude name="**/?*.clj"/>
+    <exclude name="**/?*.aj"/>
+  </patternset>
+  
+  <!-- JDK definitions -->
+  
+  <property name="jdk.bin.1.8" value="${jdk.home.1.8}/bin"/>
+  <path id="jdk.classpath.1.8">
+    <fileset dir="${jdk.home.1.8}">
+      <include name="jre/lib/charsets.jar"/>
+      <include name="jre/lib/deploy.jar"/>
+      <include name="jre/lib/ext/access-bridge-64.jar"/>
+      <include name="jre/lib/ext/cldrdata.jar"/>
+      <include name="jre/lib/ext/dnsns.jar"/>
+      <include name="jre/lib/ext/jaccess.jar"/>
+      <include name="jre/lib/ext/jfxrt.jar"/>
+      <include name="jre/lib/ext/localedata.jar"/>
+      <include name="jre/lib/ext/nashorn.jar"/>
+      <include name="jre/lib/ext/sunec.jar"/>
+      <include name="jre/lib/ext/sunjce_provider.jar"/>
+      <include name="jre/lib/ext/sunmscapi.jar"/>
+      <include name="jre/lib/ext/sunpkcs11.jar"/>
+      <include name="jre/lib/ext/zipfs.jar"/>
+      <include name="jre/lib/javaws.jar"/>
+      <include name="jre/lib/jce.jar"/>
+      <include name="jre/lib/jfr.jar"/>
+      <include name="jre/lib/jfxswt.jar"/>
+      <include name="jre/lib/jsse.jar"/>
+      <include name="jre/lib/management-agent.jar"/>
+      <include name="jre/lib/plugin.jar"/>
+      <include name="jre/lib/resources.jar"/>
+      <include name="jre/lib/rt.jar"/>
+    </fileset>
+  </path>
+  
+  <property name="project.jdk.home" value="${jdk.home.1.8}"/>
+  <property name="project.jdk.bin" value="${jdk.bin.1.8}"/>
+  <property name="project.jdk.classpath" value="jdk.classpath.1.8"/>
+  
+  
+  <!-- Project Libraries -->
+  
+  <path id="library.com.opencsv:opencsv:4.1.classpath">
+    <pathelement location="${basedir}/lib/commons-beanutils-1.9.3.jar"/>
+    <pathelement location="${basedir}/lib/commons-collections-3.2.2.jar"/>
+    <pathelement location="${basedir}/lib/commons-lang3-3.6.jar"/>
+    <pathelement location="${basedir}/lib/commons-logging-1.2.jar"/>
+    <pathelement location="${basedir}/lib/commons-text-1.1.jar"/>
+    <pathelement location="${basedir}/lib/opencsv-4.1.jar"/>
+  </path>
+  
+  <path id="library.flashcards_desktop.classpath">
+    <pathelement location="${basedir}/out/artifacts/FlashCards_Desktop_jar/FlashCards_Desktop.jar"/>
+  </path>
+  
+  <path id="library.lib.classpath">
+    <pathelement location="${basedir}/lib/antlr-2.7.7.jar"/>
+    <pathelement location="${basedir}/lib/classmate-1.3.0.jar"/>
+    <pathelement location="${basedir}/lib/commons-codec-1.3.jar"/>
+    <pathelement location="${basedir}/lib/commons-codec-1.6.jar"/>
+    <pathelement location="${basedir}/lib/commons-logging-1.1.1.jar"/>
+    <pathelement location="${basedir}/lib/dom4j-1.6.1.jar"/>
+    <pathelement location="${basedir}/lib/google-api-client-1.22.0.jar"/>
+    <pathelement location="${basedir}/lib/google-api-services-drive-v3-rev81-1.22.0.jar"/>
+    <pathelement location="${basedir}/lib/google-http-client-1.22.0.jar"/>
+    <pathelement location="${basedir}/lib/google-http-client-jackson2-1.22.0.jar"/>
+    <pathelement location="${basedir}/lib/google-oauth-client-1.22.0.jar"/>
+    <pathelement location="${basedir}/lib/google-oauth-client-java6-1.22.0.jar"/>
+    <pathelement location="${basedir}/lib/google-oauth-client-jetty-1.22.0.jar"/>
+    <pathelement location="${basedir}/lib/guava-jdk5-17.0.jar"/>
+    <pathelement location="${basedir}/lib/hibernate-commons-annotations-5.0.1.Final.jar"/>
+    <pathelement location="${basedir}/lib/hibernate-core-5.2.10.Final.jar"/>
+    <pathelement location="${basedir}/lib/hibernate-jpa-2.1-api-1.0.0.Final.jar"/>
+    <pathelement location="${basedir}/lib/httpclient-4.0.1.jar"/>
+    <pathelement location="${basedir}/lib/httpcore-4.0.1.jar"/>
+    <pathelement location="${basedir}/lib/jackson-core-2.1.3.jar"/>
+    <pathelement location="${basedir}/lib/jandex-2.0.3.Final.jar"/>
+    <pathelement location="${basedir}/lib/javassist-3.20.0-GA.jar"/>
+    <pathelement location="${basedir}/lib/jboss-logging-3.3.0.Final.jar"/>
+    <pathelement location="${basedir}/lib/jboss-transaction-api_1.2_spec-1.0.1.Final.jar"/>
+    <pathelement location="${basedir}/lib/jetty-6.1.26.jar"/>
+    <pathelement location="${basedir}/lib/jetty-util-6.1.26.jar"/>
+    <pathelement location="${basedir}/lib/jsr305-1.3.9.jar"/>
+    <pathelement location="${basedir}/lib/opencsv-4.1.jar"/>
+    <pathelement location="${basedir}/lib/servlet-api-2.5-20081211.jar"/>
+    <pathelement location="${basedir}/lib/sqlite-jdbc-3.16.1.jar"/>
+    <pathelement location="${basedir}/lib/xml-apis-1.0.b2.jar"/>
+  </path>
+  <!-- Register Custom Compiler Taskdefs -->
+  <property name="javac2.home" value="${idea.home}/lib"/>
+  <path id="javac2.classpath">
+    <pathelement location="${javac2.home}/javac2.jar"/>
+    <pathelement location="${javac2.home}/jdom.jar"/>
+    <pathelement location="${javac2.home}/asm-all.jar"/>
+    <pathelement location="${javac2.home}/jgoodies-forms.jar"/>
+  </path>
+  <target name="register.custom.compilers">
+    <taskdef name="javac2" classname="com.intellij.ant.Javac2" classpathref="javac2.classpath"/>
+    <taskdef name="instrumentIdeaExtensions" classname="com.intellij.ant.InstrumentIdeaExtensions" classpathref="javac2.classpath"/>
+  </target>
+  
+  <!-- Modules -->
+  
+  
+  <!-- Module FlashCards_Desktop -->
+  
+  <dirname property="module.flashcards_desktop.basedir" file="${ant.file}"/>
+  
+  
+  <property name="module.jdk.home.flashcards_desktop" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.flashcards_desktop" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.flashcards_desktop" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.flashcards_desktop" value="-encoding UTF-8 -source 1.8 -target 1.8 ${compiler.args}"/>
+  
+  <property name="flashcards_desktop.output.dir" value="${module.flashcards_desktop.basedir}/out/production/FlashCards_Desktop"/>
+  <property name="flashcards_desktop.testoutput.dir" value="${module.flashcards_desktop.basedir}/out/test/FlashCards_Desktop"/>
+  
+  <path id="flashcards_desktop.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="flashcards_desktop.module.production.classpath">
+    <path refid="${module.jdk.classpath.flashcards_desktop}"/>
+    <path refid="library.lib.classpath"/>
+    <path refid="library.flashcards_desktop.classpath"/>
+    <path refid="library.com.opencsv:opencsv:4.1.classpath"/>
+  </path>
+  
+  <path id="flashcards_desktop.runtime.production.module.classpath">
+    <pathelement location="${flashcards_desktop.output.dir}"/>
+    <path refid="library.lib.classpath"/>
+    <path refid="library.flashcards_desktop.classpath"/>
+    <path refid="library.com.opencsv:opencsv:4.1.classpath"/>
+  </path>
+  
+  <path id="flashcards_desktop.module.classpath">
+    <path refid="${module.jdk.classpath.flashcards_desktop}"/>
+    <pathelement location="${flashcards_desktop.output.dir}"/>
+    <path refid="library.lib.classpath"/>
+    <path refid="library.flashcards_desktop.classpath"/>
+    <path refid="library.com.opencsv:opencsv:4.1.classpath"/>
+  </path>
+  
+  <path id="flashcards_desktop.runtime.module.classpath">
+    <pathelement location="${flashcards_desktop.testoutput.dir}"/>
+    <pathelement location="${flashcards_desktop.output.dir}"/>
+    <path refid="library.lib.classpath"/>
+    <path refid="library.flashcards_desktop.classpath"/>
+    <path refid="library.com.opencsv:opencsv:4.1.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.flashcards_desktop">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.flashcards_desktop">
+    <patternset refid="excluded.from.module.flashcards_desktop"/>
+  </patternset>
+  
+  <path id="flashcards_desktop.module.sourcepath">
+    <dirset dir="${module.flashcards_desktop.basedir}/src">
+      <include name="main"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.flashcards_desktop" depends="compile.module.flashcards_desktop.production,compile.module.flashcards_desktop.tests" description="Compile module FlashCards_Desktop"/>
+  
+  <target name="compile.module.flashcards_desktop.production" depends="register.custom.compilers" description="Compile module FlashCards_Desktop; production classes">
+    <mkdir dir="${flashcards_desktop.output.dir}"/>
+    <javac2 destdir="${flashcards_desktop.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.flashcards_desktop}/javac">
+      <compilerarg line="${compiler.args.flashcards_desktop}"/>
+      <bootclasspath refid="flashcards_desktop.module.bootclasspath"/>
+      <classpath refid="flashcards_desktop.module.production.classpath"/>
+      <src refid="flashcards_desktop.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.flashcards_desktop"/>
+    </javac2>
+    
+    <copy todir="${flashcards_desktop.output.dir}">
+      <fileset dir="${module.flashcards_desktop.basedir}/src/main">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.flashcards_desktop.tests" depends="register.custom.compilers,compile.module.flashcards_desktop.production" description="compile module FlashCards_Desktop; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.flashcards_desktop" description="cleanup module">
+    <delete dir="${flashcards_desktop.output.dir}"/>
+    <delete dir="${flashcards_desktop.testoutput.dir}"/>
+  </target>
+  
+  <target name="init" description="Build initialization">
+    <!-- Perform any build initialization in this target -->
+  </target>
+  
+  <target name="clean" depends="clean.module.flashcards_desktop, clean.artifact.flashcards_desktop:jar" description="cleanup all"/>
+  
+  <target name="build.modules" depends="init, clean, compile.module.flashcards_desktop" description="build all modules"/>
+  
+  <target name="init.artifacts">
+    <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
+    <property name="artifact.output.flashcards_desktop:jar" value="${basedir}/out/artifacts/FlashCards_Desktop_jar"/>
+    <mkdir dir="${artifacts.temp.dir}"/>
+    <property name="artifact.temp.output." value="${artifacts.temp.dir}/"/>
+    <taskdef resource="com/sun/javafx/tools/ant/antlib.xml" uri="javafx:com.sun.javafx.tools.ant" classpath="${jdk.home.1.8}/lib/ant-javafx.jar"/>
+  </target>
+  
+  <target name="clean.artifact.flashcards_desktop:jar" description="clean FlashCards_Desktop:jar artifact output">
+    <delete dir="${artifact.output.flashcards_desktop:jar}"/>
+  </target>
+  
+  <target name="artifact.flashcards_desktop:jar" depends="init.artifacts, compile.module.flashcards_desktop" description="Build &#39;FlashCards_Desktop:jar&#39; artifact" xmlns:fx="javafx:com.sun.javafx.tools.ant">
+    <mkdir dir="${artifact.output.flashcards_desktop:jar}"/>
+    <copy todir="${artifact.temp.output.}">
+      <fileset dir="${flashcards_desktop.output.dir}"/>
+    </copy>
+    <unzip src="${basedir}/lib/sqlite-jdbc-3.16.1.jar" dest="${artifact.temp.output.}"/>
+    <unzip src="${basedir}/lib/jboss-logging-3.3.0.Final.jar" dest="${artifact.temp.output.}"/>
+    <unzip src="${basedir}/lib/antlr-2.7.7.jar" dest="${artifact.temp.output.}"/>
+    <unzip src="${basedir}/lib/jackson-core-2.1.3.jar" dest="${artifact.temp.output.}"/>
+    <unzip src="${basedir}/lib/classmate-1.3.0.jar" dest="${artifact.temp.output.}"/>
+    <unzip src="${basedir}/lib/httpclient-4.0.1.jar" dest="${artifact.temp.output.}"/>
+    <unzip src="${basedir}/lib/javassist-3.20.0-GA.jar" dest="${artifact.temp.output.}"/>
+    <unzip src="${basedir}/lib/commons-logging-1.1.1.jar" dest="${artifact.temp.output.}"/>
+    <unzip src="${basedir}/lib/jetty-6.1.26.jar" dest="${artifact.temp.output.}"/>
+    <unzip src="${basedir}/lib/commons-codec-1.3.jar" dest="${artifact.temp.output.}"/>
+    <unzip src="${basedir}/lib/google-http-client-1.22.0.jar" dest="${artifact.temp.output.}"/>
+    <unzip src="${basedir}/lib/jboss-transaction-api_1.2_spec-1.0.1.Final.jar" dest="${artifact.temp.output.}"/>
+    <unzip src="${basedir}/lib/google-oauth-client-jetty-1.22.0.jar" dest="${artifact.temp.output.}"/>
+    <unzip src="${basedir}/lib/xml-apis-1.0.b2.jar" dest="${artifact.temp.output.}"/>
+    <unzip src="${basedir}/lib/hibernate-jpa-2.1-api-1.0.0.Final.jar" dest="${artifact.temp.output.}"/>
+    <unzip src="${basedir}/lib/jsr305-1.3.9.jar" dest="${artifact.temp.output.}"/>
+    <unzip src="${basedir}/lib/jandex-2.0.3.Final.jar" dest="${artifact.temp.output.}"/>
+    <unzip src="${basedir}/lib/guava-jdk5-17.0.jar" dest="${artifact.temp.output.}"/>
+    <unzip src="${basedir}/lib/google-api-services-drive-v3-rev81-1.22.0.jar" dest="${artifact.temp.output.}"/>
+    <unzip src="${basedir}/lib/httpcore-4.0.1.jar" dest="${artifact.temp.output.}"/>
+    <unzip src="${basedir}/lib/jetty-util-6.1.26.jar" dest="${artifact.temp.output.}"/>
+    <unzip src="${basedir}/lib/google-http-client-jackson2-1.22.0.jar" dest="${artifact.temp.output.}"/>
+    <unzip src="${basedir}/lib/servlet-api-2.5-20081211.jar" dest="${artifact.temp.output.}"/>
+    <unzip src="${basedir}/lib/google-api-client-1.22.0.jar" dest="${artifact.temp.output.}"/>
+    <unzip src="${basedir}/lib/commons-codec-1.6.jar" dest="${artifact.temp.output.}"/>
+    <unzip src="${basedir}/lib/hibernate-commons-annotations-5.0.1.Final.jar" dest="${artifact.temp.output.}"/>
+    <unzip src="${basedir}/lib/google-oauth-client-1.22.0.jar" dest="${artifact.temp.output.}"/>
+    <unzip src="${basedir}/lib/google-oauth-client-java6-1.22.0.jar" dest="${artifact.temp.output.}"/>
+    <unzip src="${basedir}/lib/hibernate-core-5.2.10.Final.jar" dest="${artifact.temp.output.}"/>
+    <unzip src="${basedir}/lib/dom4j-1.6.1.jar" dest="${artifact.temp.output.}"/>
+    <unzip src="${basedir}/lib/opencsv-4.1.jar" dest="${artifact.temp.output.}"/>
+    <copy file="${basedir}/lib/opencsv-4.1.jar" tofile="${artifact.temp.output.}/opencsv-4.1.jar"/>
+    <copy file="${basedir}/lib/commons-lang3-3.6.jar" tofile="${artifact.temp.output.}/commons-lang3-3.6.jar"/>
+    <copy file="${basedir}/lib/commons-text-1.1.jar" tofile="${artifact.temp.output.}/commons-text-1.1.jar"/>
+    <copy file="${basedir}/lib/commons-beanutils-1.9.3.jar" tofile="${artifact.temp.output.}/commons-beanutils-1.9.3.jar"/>
+    <copy file="${basedir}/lib/commons-logging-1.2.jar" tofile="${artifact.temp.output.}/commons-logging-1.2.jar"/>
+    <copy file="${basedir}/lib/commons-collections-3.2.2.jar" tofile="${artifact.temp.output.}/commons-collections-3.2.2.jar"/>
+    <copy file="${basedir}/lib/sqlite-jdbc-3.16.1.jar" tofile="${artifact.temp.output.}/sqlite-jdbc-3.16.1.jar"/>
+    <copy file="${basedir}/lib/jboss-logging-3.3.0.Final.jar" tofile="${artifact.temp.output.}/jboss-logging-3.3.0.Final.jar"/>
+    <copy file="${basedir}/lib/antlr-2.7.7.jar" tofile="${artifact.temp.output.}/antlr-2.7.7.jar"/>
+    <copy file="${basedir}/lib/jackson-core-2.1.3.jar" tofile="${artifact.temp.output.}/jackson-core-2.1.3.jar"/>
+    <copy file="${basedir}/lib/classmate-1.3.0.jar" tofile="${artifact.temp.output.}/classmate-1.3.0.jar"/>
+    <copy file="${basedir}/lib/httpclient-4.0.1.jar" tofile="${artifact.temp.output.}/httpclient-4.0.1.jar"/>
+    <copy file="${basedir}/lib/javassist-3.20.0-GA.jar" tofile="${artifact.temp.output.}/javassist-3.20.0-GA.jar"/>
+    <copy file="${basedir}/lib/commons-logging-1.1.1.jar" tofile="${artifact.temp.output.}/commons-logging-1.1.1.jar"/>
+    <copy file="${basedir}/lib/jetty-6.1.26.jar" tofile="${artifact.temp.output.}/jetty-6.1.26.jar"/>
+    <copy file="${basedir}/lib/commons-codec-1.3.jar" tofile="${artifact.temp.output.}/commons-codec-1.3.jar"/>
+    <copy file="${basedir}/lib/google-http-client-1.22.0.jar" tofile="${artifact.temp.output.}/google-http-client-1.22.0.jar"/>
+    <copy file="${basedir}/lib/jboss-transaction-api_1.2_spec-1.0.1.Final.jar" tofile="${artifact.temp.output.}/jboss-transaction-api_1.2_spec-1.0.1.Final.jar"/>
+    <copy file="${basedir}/lib/google-oauth-client-jetty-1.22.0.jar" tofile="${artifact.temp.output.}/google-oauth-client-jetty-1.22.0.jar"/>
+    <copy file="${basedir}/lib/xml-apis-1.0.b2.jar" tofile="${artifact.temp.output.}/xml-apis-1.0.b2.jar"/>
+    <copy file="${basedir}/lib/hibernate-jpa-2.1-api-1.0.0.Final.jar" tofile="${artifact.temp.output.}/hibernate-jpa-2.1-api-1.0.0.Final.jar"/>
+    <copy file="${basedir}/lib/jsr305-1.3.9.jar" tofile="${artifact.temp.output.}/jsr305-1.3.9.jar"/>
+    <copy file="${basedir}/lib/jandex-2.0.3.Final.jar" tofile="${artifact.temp.output.}/jandex-2.0.3.Final.jar"/>
+    <copy file="${basedir}/lib/guava-jdk5-17.0.jar" tofile="${artifact.temp.output.}/guava-jdk5-17.0.jar"/>
+    <copy file="${basedir}/lib/google-api-services-drive-v3-rev81-1.22.0.jar" tofile="${artifact.temp.output.}/google-api-services-drive-v3-rev81-1.22.0.jar"/>
+    <copy file="${basedir}/lib/httpcore-4.0.1.jar" tofile="${artifact.temp.output.}/httpcore-4.0.1.jar"/>
+    <copy file="${basedir}/lib/jetty-util-6.1.26.jar" tofile="${artifact.temp.output.}/jetty-util-6.1.26.jar"/>
+    <copy file="${basedir}/lib/google-http-client-jackson2-1.22.0.jar" tofile="${artifact.temp.output.}/google-http-client-jackson2-1.22.0.jar"/>
+    <copy file="${basedir}/lib/servlet-api-2.5-20081211.jar" tofile="${artifact.temp.output.}/servlet-api-2.5-20081211.jar"/>
+    <copy file="${basedir}/lib/google-api-client-1.22.0.jar" tofile="${artifact.temp.output.}/google-api-client-1.22.0.jar"/>
+    <copy file="${basedir}/lib/commons-codec-1.6.jar" tofile="${artifact.temp.output.}/commons-codec-1.6.jar"/>
+    <copy file="${basedir}/lib/hibernate-commons-annotations-5.0.1.Final.jar" tofile="${artifact.temp.output.}/hibernate-commons-annotations-5.0.1.Final.jar"/>
+    <copy file="${basedir}/lib/google-oauth-client-1.22.0.jar" tofile="${artifact.temp.output.}/google-oauth-client-1.22.0.jar"/>
+    <copy file="${basedir}/lib/google-oauth-client-java6-1.22.0.jar" tofile="${artifact.temp.output.}/google-oauth-client-java6-1.22.0.jar"/>
+    <copy file="${basedir}/lib/hibernate-core-5.2.10.Final.jar" tofile="${artifact.temp.output.}/hibernate-core-5.2.10.Final.jar"/>
+    <copy file="${basedir}/lib/dom4j-1.6.1.jar" tofile="${artifact.temp.output.}/dom4j-1.6.1.jar"/>
+    <copy file="${basedir}/lib/opencsv-4.1.jar" tofile="${artifact.temp.output.}/opencsv-4.1.jar"/>
+    <fx:fileset id="all_but_" dir="${artifact.temp.output.}" includes="**/*.jar">
+      <exclude name=""/>
+    </fx:fileset>
+    <fx:fileset id="all_" dir="${artifact.temp.output.}" includes="**/*.jar"/>
+    <fx:application id="_id" name="FlashCards_Desktop:jar" mainClass="ViewModel.Start"/>
+    <fx:jar destfile="${artifact.temp.output.}/">
+      <fx:application refid="_id"/>
+      <fileset dir="${artifact.temp.output.}" excludes="**/*.jar"/>
+      <fx:resources>
+        <fx:fileset refid="all_but_"/>
+      </fx:resources>
+      <manifest>
+        <attribute name="Implementation-Title" value="MyApp"/>
+        <attribute name="Implementation-Version" value=""/>
+        <attribute name="Implementation-Vendor" value="dff"/>
+      </manifest>
+    </fx:jar>
+    <fx:deploy width="600" height="400" updatemode="background" outdir="${artifact.temp.output.}/deploy" outfile="">
+      <fx:application refid="_id"/>
+      <fx:info title="MyApp" vendor="dff" description="dsfsdf"/>
+      <fx:resources>
+        <fx:fileset refid="all_"/>
+      </fx:resources>
+    </fx:deploy>
+    <copy todir="${artifact.output.flashcards_desktop:jar}">
+      <fileset dir="${artifact.temp.output.}/deploy"/>
+    </copy>
+    <delete includeemptydirs="true">
+      <fileset dir="${artifact.temp.output.}"/>
+    </delete>
+  </target>
+  
+  <target name="build.all.artifacts" depends="artifact.flashcards_desktop:jar" description="Build all artifacts">
+    
+    <!-- Delete temporary files -->
+    <delete dir="${artifacts.temp.dir}"/>
+  </target>
+  
+  <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>
+</project>

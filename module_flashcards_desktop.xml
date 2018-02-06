@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_flashcards_desktop" default="compile.module.flashcards_desktop">
+  <dirname property="module.flashcards_desktop.basedir" file="${ant.file.module_flashcards_desktop}"/>
+  
+  <property name="module.jdk.home.flashcards_desktop" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.flashcards_desktop" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.flashcards_desktop" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.flashcards_desktop" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="flashcards_desktop.output.dir" value="${module.flashcards_desktop.basedir}/out/production/FlashCards_Desktop"/>
+  <property name="flashcards_desktop.testoutput.dir" value="${module.flashcards_desktop.basedir}/out/test/FlashCards_Desktop"/>
+  
+  <path id="flashcards_desktop.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="flashcards_desktop.module.production.classpath">
+    <path refid="${module.jdk.classpath.flashcards_desktop}"/>
+    <path refid="library.com.google.api-client:google-api-client:1.22.0.classpath"/>
+    <path refid="library.com.google.oauth-client:google-oauth-client-jetty:1.22.0.classpath"/>
+    <path refid="library.com.google.apis:google-api-services-drive:v3-rev81-1.22.0.classpath"/>
+    <path refid="library.org.hibernate:hibernate-core:5.2.10.final.classpath"/>
+    <path refid="library.org.xerial:sqlite-jdbc:3.16.1.classpath"/>
+  </path>
+  
+  <path id="flashcards_desktop.runtime.production.module.classpath">
+    <pathelement location="${flashcards_desktop.output.dir}"/>
+    <path refid="library.com.google.api-client:google-api-client:1.22.0.classpath"/>
+    <path refid="library.com.google.oauth-client:google-oauth-client-jetty:1.22.0.classpath"/>
+    <path refid="library.com.google.apis:google-api-services-drive:v3-rev81-1.22.0.classpath"/>
+    <path refid="library.org.hibernate:hibernate-core:5.2.10.final.classpath"/>
+    <path refid="library.org.xerial:sqlite-jdbc:3.16.1.classpath"/>
+  </path>
+  
+  <path id="flashcards_desktop.module.classpath">
+    <path refid="${module.jdk.classpath.flashcards_desktop}"/>
+    <pathelement location="${flashcards_desktop.output.dir}"/>
+    <path refid="library.com.google.api-client:google-api-client:1.22.0.classpath"/>
+    <path refid="library.com.google.oauth-client:google-oauth-client-jetty:1.22.0.classpath"/>
+    <path refid="library.com.google.apis:google-api-services-drive:v3-rev81-1.22.0.classpath"/>
+    <path refid="library.org.hibernate:hibernate-core:5.2.10.final.classpath"/>
+    <path refid="library.org.xerial:sqlite-jdbc:3.16.1.classpath"/>
+    <pathelement location="${idea.home}/plugins/junit/lib/junit-jupiter-api-5.0.0-M3.jar"/>
+    <pathelement location="${idea.home}/plugins/junit/lib/opentest4j-1.0.0-M1.jar"/>
+  </path>
+  
+  <path id="flashcards_desktop.runtime.module.classpath">
+    <pathelement location="${flashcards_desktop.testoutput.dir}"/>
+    <pathelement location="${flashcards_desktop.output.dir}"/>
+    <path refid="library.com.google.api-client:google-api-client:1.22.0.classpath"/>
+    <path refid="library.com.google.oauth-client:google-oauth-client-jetty:1.22.0.classpath"/>
+    <path refid="library.com.google.apis:google-api-services-drive:v3-rev81-1.22.0.classpath"/>
+    <path refid="library.org.hibernate:hibernate-core:5.2.10.final.classpath"/>
+    <path refid="library.org.xerial:sqlite-jdbc:3.16.1.classpath"/>
+    <pathelement location="${idea.home}/plugins/junit/lib/junit-jupiter-api-5.0.0-M3.jar"/>
+    <pathelement location="${idea.home}/plugins/junit/lib/opentest4j-1.0.0-M1.jar"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.flashcards_desktop">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.flashcards_desktop">
+    <patternset refid="excluded.from.module.flashcards_desktop"/>
+  </patternset>
+  
+  <path id="flashcards_desktop.module.sourcepath">
+    <dirset dir="${module.flashcards_desktop.basedir}">
+      <include name="src/main"/>
+    </dirset>
+  </path>
+  
+  <path id="flashcards_desktop.module.test.sourcepath">
+    <dirset dir="${module.flashcards_desktop.basedir}">
+      <include name="src/test"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.flashcards_desktop" depends="compile.module.flashcards_desktop.production,compile.module.flashcards_desktop.tests" description="Compile module FlashCards_Desktop"/>
+  
+  <target name="compile.module.flashcards_desktop.production" depends="register.custom.compilers" description="Compile module FlashCards_Desktop; production classes">
+    <mkdir dir="${flashcards_desktop.output.dir}"/>
+    <javac2 destdir="${flashcards_desktop.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.flashcards_desktop}/javac">
+      <compilerarg line="${compiler.args.flashcards_desktop}"/>
+      <bootclasspath refid="flashcards_desktop.module.bootclasspath"/>
+      <classpath refid="flashcards_desktop.module.production.classpath"/>
+      <src refid="flashcards_desktop.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.flashcards_desktop"/>
+    </javac2>
+    
+    <copy todir="${flashcards_desktop.output.dir}">
+      <fileset dir="${module.flashcards_desktop.basedir}/src/main">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.flashcards_desktop.tests" depends="register.custom.compilers,compile.module.flashcards_desktop.production" description="compile module FlashCards_Desktop; test classes" unless="skip.tests">
+    <mkdir dir="${flashcards_desktop.testoutput.dir}"/>
+    <javac2 destdir="${flashcards_desktop.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.flashcards_desktop}/javac">
+      <compilerarg line="${compiler.args.flashcards_desktop}"/>
+      <bootclasspath refid="flashcards_desktop.module.bootclasspath"/>
+      <classpath refid="flashcards_desktop.module.classpath"/>
+      <src refid="flashcards_desktop.module.test.sourcepath"/>
+      <patternset refid="excluded.from.compilation.flashcards_desktop"/>
+    </javac2>
+    
+    <copy todir="${flashcards_desktop.testoutput.dir}">
+      <fileset dir="${module.flashcards_desktop.basedir}/src/test">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="clean.module.flashcards_desktop" description="cleanup module">
+    <delete dir="${flashcards_desktop.output.dir}"/>
+    <delete dir="${flashcards_desktop.testoutput.dir}"/>
+  </target>
+</project>
