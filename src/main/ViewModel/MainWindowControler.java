@@ -9,9 +9,7 @@ import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -159,7 +157,7 @@ public class MainWindowControler {
         File file = new File(DATABASE_FILE_LOCATION+""+DATABASE_FILE_NAME);
         if(file.exists())
         {
-            List<FlashcardTableHelper> list =  GetAllFlashcards();
+            List<FlashcardTableHelper> list =  GetAllFlashcardsToTableHelper();
             for (FlashcardTableHelper flashcardTableHelper : list) {
                 filteredData.add(flashcardTableHelper);
                 data.add(flashcardTableHelper);

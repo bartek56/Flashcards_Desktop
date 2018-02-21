@@ -1,5 +1,6 @@
 package Model;
 
+import Model.DataBase.SQLite.FileContent;
 import Model.DataBase.SQLite.FlashcardHelper;
 import Model.DataBase.SQLite.SQLiteJDBCDriverConnection;
 import Model.DataBase.SQLite.Tables.Flashcard;
@@ -9,7 +10,6 @@ import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
-import com.google.api.client.http.FileContent;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
@@ -20,9 +20,9 @@ import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
 
 import java.io.*;
+import java.util.List;
 
 import static Model.DataBase.SQLite.SQLiteJDBCDriverConnection.DATABASE_FILE_NAME;
-import static Model.DataBase.SQLite.SQLiteJDBCDriverConnection.connect;
 
 
 /**
@@ -188,9 +188,26 @@ public class GoogleDriveHelper {
         try {
         // First retrieve the file from the API.
         //File file = service.files().get(fileId).execute();
+
+            List<String> list = FlashcardHelper.GetAllFlashcardsAsStringList();
+
+
             File file = new File();
 
             file.setMimeType("text/plain");
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+            for (String line : list) {
+                baos.write(line.getBytes());
+                //baos.write('\n');
+            }
+
+            byte[] bytes = baos.toByteArray();
+
+
+            InputStream is = new ByteArrayInputStream(bytes);
+
 
         // File's new metadata.
             /*
@@ -202,16 +219,18 @@ public class GoogleDriveHelper {
         // File's new content.
 
         //java.io.File fileContent = new java.io.File("C:/sqlite/" + DATABASE_FILE_NAME);
-        java.io.File fileContent = new java.io.File(SQLiteJDBCDriverConnection.DATABASE_FILE_LOCATION + DATABASE_FILE_NAME);
+        //java.io.File fileContent = new java.io.File(SQLiteJDBCDriverConnection.DATABASE_FILE_LOCATION + DATABASE_FILE_NAME);
        //file.setTrashed(true);
 
-        FileContent mediaContent = new FileContent("text/plain", fileContent);
+        FileContent mediaContent = new FileContent("text/plain", is);
+
 
         // Send the request to the API.
         //File updatedFile = service.files().update(fileId, file, mediaContent).execute();
-            System.out.println("fileID writeToFile: "+fileId);
-        File updatedFile = service.files().update(fileId,file,mediaContent).execute();
 
+        System.out.println("fileID writeToFile: "+fileId);
+        File updatedFile = service.files().update(fileId,file,mediaContent).execute();
+        //service.files().
 
         //return updatedFile;
     } catch (IOException e) {

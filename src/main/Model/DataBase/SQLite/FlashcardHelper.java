@@ -98,7 +98,47 @@ public class FlashcardHelper {
         return category;
     }
 
-    public static List<FlashcardTableHelper> GetAllFlashcards()
+    public static List<String> GetAllFlashcardsAsStringList()
+    {
+        List<String> categoriesList = GetCategories();
+        List<String> flashcardList = new ArrayList<>();
+
+        for(String category : categoriesList) {
+            try {
+                String category2 = category.replace(" ","_");
+                Statement stmt = SQLiteJDBCDriverConnection.connection.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT idFlashcard, known FROM " + category2 + " ");
+
+                while (rs.next()) {
+
+                    int idFlashcard = rs.getInt(1);
+                    Flashcard flashcard = GetFlashcard(idFlashcard);
+
+                    String flashcardString = category2+";"+
+                            flashcard.getEngWord()+";"+
+                            flashcard.getPlWord()+";"+
+                            flashcard.getEngSentence()+";"+
+                            flashcard.getPlSentence()+";"+
+                            rs.getInt(2)+";\n";
+
+
+                    flashcardList.add(flashcardString);
+
+                }
+
+                rs.close();
+
+            } catch (Exception ex) {
+                System.err.println("GetAllFlashcard: " + ex + " "+ex.getMessage());
+                Message("GetAllFlashcard: "+ex);
+            }
+
+        }
+        return flashcardList;
+    }
+
+
+    public static List<FlashcardTableHelper> GetAllFlashcardsToTableHelper()
     {
         List<String> categoriesList = GetCategories();
         List<FlashcardTableHelper> flashcardTableHelpersList = new ArrayList<>();
