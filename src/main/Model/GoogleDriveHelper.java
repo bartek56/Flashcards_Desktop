@@ -117,6 +117,17 @@ public class GoogleDriveHelper {
         return new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential).setApplicationName(APPLICATION_NAME).build();
     }
 
+    private static String GetCsvFileName(String DATABASE_FILE_NAME)
+    {
+        String csvFileName="";
+        switch (DATABASE_FILE_NAME)
+        {
+            case "flashcardsEng.db": csvFileName="flashcardsEng.csv";break;
+            case "flashcardsDe.db": csvFileName="flashcardsDe.csv"; break;
+            case "flashcardsFr.db": csvFileName="flashcardsFr.csv"; break;
+        }
+        return csvFileName;
+    }
 
     public static void ConnectWithGoogle ()
     {
@@ -135,7 +146,7 @@ public class GoogleDriveHelper {
                         .setPageToken(pageToken)
                         .execute();
                 for (File file : result.getFiles()) {
-                    if (file.getName().equals(DATABASE_FILE_NAME)) {
+                    if (file.getName().equals(GetCsvFileName(DATABASE_FILE_NAME))) {
                         fileId = file.getId();
                         System.out.println("DataBase file Exist id: "+fileId);
 
@@ -189,7 +200,7 @@ public class GoogleDriveHelper {
         // File's new content.
 
         //java.io.File fileContent = new java.io.File("C:/sqlite/" + DATABASE_FILE_NAME);
-            java.io.File fileContent = new java.io.File(SQLiteJDBCDriverConnection.DATABASE_FILE_LOCATION + DATABASE_FILE_NAME);
+        java.io.File fileContent = new java.io.File(SQLiteJDBCDriverConnection.DATABASE_FILE_LOCATION + DATABASE_FILE_NAME);
        //file.setTrashed(true);
 
         FileContent mediaContent = new FileContent("text/plain", fileContent);
@@ -260,6 +271,7 @@ public class GoogleDriveHelper {
             OutputStream oos = new FileOutputStream(file);
             //Writer writer = new OutputStreamWriter(oos);
 
+            //service.files().get(fileId).executeMediaAsInputStream()
             service.files().get(fileId).executeMediaAndDownloadTo(oos);
             //service.files().get
 
