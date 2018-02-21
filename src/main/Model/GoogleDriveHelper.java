@@ -1,6 +1,8 @@
 package Model;
 
+import Model.DataBase.SQLite.FlashcardHelper;
 import Model.DataBase.SQLite.SQLiteJDBCDriverConnection;
+import Model.DataBase.SQLite.Tables.Flashcard;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
@@ -167,7 +169,7 @@ public class GoogleDriveHelper {
             }
             else
             {
-                connect();
+                //connect();
                 ReadFromFile(service);
             }
         }
@@ -268,12 +270,59 @@ public class GoogleDriveHelper {
         java.io.File file = new java.io.File(SQLiteJDBCDriverConnection.DATABASE_FILE_LOCATION + DATABASE_FILE_NAME);
 
         try {
-            OutputStream oos = new FileOutputStream(file);
+            //OutputStream oos = new FileOutputStream(file);
             //Writer writer = new OutputStreamWriter(oos);
 
-            //service.files().get(fileId).executeMediaAsInputStream()
-            service.files().get(fileId).executeMediaAndDownloadTo(oos);
+
+            InputStream is = service.files().get(fileId).executeMediaAsInputStream();
+
+
+            //service.files().get(fileId).executeMediaAndDownloadTo(oos);
             //service.files().get
+
+            byte[] buf = new byte[1];
+            int c;
+            String allText="";
+            int i=0;
+
+            Flashcard flashcard = new Flashcard(null, null, null, null);
+            String category="";
+
+            //while ((c = is.read(buf)) > 0) {
+            while (is.read(buf)>0) {
+                //oos.write(buf);
+                String text = new String(buf);
+
+                if(text.equals(";"))
+                {
+                    i++;
+
+                    switch (i)
+                    {
+                        case 1: category = allText; FlashcardHelper.AddCategory(category); break;
+                        case 2: flashcard.setEngWord(allText);  break;
+                        case 3: flashcard.setPlWord(allText); break;
+                        case 4: flashcard.setEngSentence(allText); break;
+                        case 5: flashcard.setPlSentence(allText); break;
+                        case 6:
+                        {
+                            i=0;
+                            //int id = MainActivity.dbFlashcard.AddFlashcardIfNotExist(flashcard);
+                            int id = FlashcardHelper.AddFlashcardIfNotExist(flashcard);
+                            if(id!=0)
+                            {
+                                FlashcardHelper.AddFlashcardToCategory(category,id);
+                            }
+                            break;
+                        }
+                    }
+                    allText="";
+                }
+                else
+                {
+                    allText+=text;
+                }
+            }
 
             /*
             InputStream is = result.getDriveContents().getInputStream();

@@ -166,13 +166,22 @@ public class FlashcardHelper {
         return flashcard;
     }
 
-    public static int GetFlashcardId(String plWord, String engWord)
+    public static int AddFlashcardIfNotExist(Flashcard flashcard)
+    {
+        int id=0;
+        if(GetFlashcardId(flashcard.getEngWord())==0)
+        {
+            id = AddFlashcard(flashcard);
+        }
+        return id;
+    }
+
+    public static int GetFlashcardId(String engWord)
     {
         int id = 0;
         try {
-
             Statement stmt = SQLiteJDBCDriverConnection.connection.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT id FROM flashcard WHERE engWord=\""+engWord+"\" AND plWord=\""+plWord+"\" ");
+            ResultSet rs = stmt.executeQuery("SELECT id FROM flashcard WHERE engWord=\""+engWord+"\" ");
 
             while ( rs.next() ) {
                 id = rs.getInt(1);
@@ -303,6 +312,39 @@ public class FlashcardHelper {
                     "known boolean);"+
                     "";
             statement.executeUpdate(sql2);
+        }
+        catch (Exception ex)
+        {
+            Message("AddCategory: "+ex);
+            System.err.println("AddCategory: "+ex);
+        }
+
+    }
+
+    public static void CreateDefoulltsTables()
+    {
+        try
+        {
+            Statement statement = SQLiteJDBCDriverConnection.connection.createStatement();
+            String sql2 = "create table if not exists inne(" +
+                    "id integer primary key autoincrement," +
+                    "idFlashcard integer,"+
+                    "known boolean);"+
+                    "";
+            statement.executeUpdate(sql2);
+
+
+            String sql = "create table if not exists flashcard(" +
+                    "id integer primary key autoincrement," +
+                    "engWord text," +
+                    "plWord text," +
+                    "engSentence text," +
+                    "plSentence text);" +
+                    "";
+            statement.executeUpdate(sql);
+
+
+
         }
         catch (Exception ex)
         {

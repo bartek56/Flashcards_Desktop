@@ -35,6 +35,7 @@ import java.util.List;
 import static Model.DataBase.SQLite.FlashcardHelper.*;
 import static Model.DataBase.SQLite.SQLiteJDBCDriverConnection.DATABASE_FILE_LOCATION;
 import static Model.DataBase.SQLite.SQLiteJDBCDriverConnection.DATABASE_FILE_NAME;
+import static Model.DataBase.SQLite.SQLiteJDBCDriverConnection.connect;
 import static Model.GoogleDriveHelper.isOpen;
 
 
@@ -428,7 +429,8 @@ public class MainWindowControler {
             engSentenceColumn.setText("Zdanie Fr");
         }
 
-
+        connect();
+        FlashcardHelper.CreateDefoulltsTables();
         Thread thread = new Thread(new Runnable(){
             @Override
             public void run() {
