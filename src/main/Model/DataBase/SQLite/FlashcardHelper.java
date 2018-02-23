@@ -114,16 +114,14 @@ public class FlashcardHelper {
                     int idFlashcard = rs.getInt(1);
                     Flashcard flashcard = GetFlashcard(idFlashcard);
 
-                    String flashcardString = category2+";"+
-                            flashcard.getEngWord()+";"+
-                            flashcard.getPlWord()+";"+
-                            flashcard.getEngSentence()+";"+
-                            flashcard.getPlSentence()+";"+
-                            rs.getInt(2)+";\n";
-
+                    String flashcardString = category2+"~"+
+                            flashcard.getEngWord()+"~"+
+                            flashcard.getPlWord()+"~"+
+                            flashcard.getEngSentence()+"~"+
+                            flashcard.getPlSentence()+"~"+
+                            rs.getInt(2)+"~\n";
 
                     flashcardList.add(flashcardString);
-
                 }
 
                 rs.close();

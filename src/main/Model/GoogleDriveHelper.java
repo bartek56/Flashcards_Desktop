@@ -124,9 +124,9 @@ public class GoogleDriveHelper {
         String csvFileName="";
         switch (DATABASE_FILE_NAME)
         {
-            case "flashcardsEng.db": csvFileName="flashcardsEng.csv";break;
-            case "flashcardsDe.db": csvFileName="flashcardsDe.csv"; break;
-            case "flashcardsFr.db": csvFileName="flashcardsFr.csv"; break;
+            case "flashcardsEng.db": csvFileName="flashcardsEng.txt";break;
+            case "flashcardsDe.db": csvFileName="flashcardsDe.txt"; break;
+            case "flashcardsFr.db": csvFileName="flashcardsFr.txt"; break;
         }
         return csvFileName;
     }
@@ -286,7 +286,7 @@ public class GoogleDriveHelper {
     private static void ReadFromFile(Drive service)
     {
 
-        java.io.File file = new java.io.File(SQLiteJDBCDriverConnection.DATABASE_FILE_LOCATION + DATABASE_FILE_NAME);
+        //java.io.File file = new java.io.File(SQLiteJDBCDriverConnection.DATABASE_FILE_LOCATION + DATABASE_FILE_NAME);
 
         try {
             //OutputStream oos = new FileOutputStream(file);
@@ -295,27 +295,74 @@ public class GoogleDriveHelper {
 
             InputStream is = service.files().get(fileId).executeMediaAsInputStream();
 
-
+            BufferedReader reader = new BufferedReader(new InputStreamReader(service.files().get(fileId).executeMediaAsInputStream()));
             //service.files().get(fileId).executeMediaAndDownloadTo(oos);
             //service.files().get
 
+            StringBuilder builder = new StringBuilder();
+            String line;
+            String allText="";
+            String category="";
+            int i=0;
+            Flashcard flashcard = new Flashcard(null,null,null,null);
+
+            while ((line = reader.readLine()) != null)
+            {
+                builder.append(line).append("\n");
+                for (char ch:line.toCharArray()) {
+                    if(ch=='~')
+                    {
+                        i++;
+
+                        switch (i)
+                        {
+                            case 1: category = allText; FlashcardHelper.AddCategory(category);  break;
+                            case 2: flashcard.setEngWord(allText);  break;
+                            case 3: flashcard.setPlWord(allText); break;
+                            case 4: flashcard.setEngSentence(allText); break;
+                            case 5: flashcard.setPlSentence(allText); break;
+                            case 6:
+                            {
+                                i=0;
+                                int id = FlashcardHelper.AddFlashcardIfNotExist(flashcard);
+
+                                if(id!=0)
+                                {
+                                    FlashcardHelper.AddFlashcardToCategory(category,id);
+                                }
+
+                                break;
+                            }
+                        }
+                        allText="";
+                    }
+                    else
+                    {
+                        allText+=ch;
+                    }
+                }
+            }
+
+            reader.close();
+
+            /*
             byte[] buf = new byte[1];
             int c;
             String allText="";
             int i=0;
 
-            Flashcard flashcard = new Flashcard(null, null, null, null);
+            Flashcard flashcard = new Flashcard("", "", "", "");
             String category="";
 
             //while ((c = is.read(buf)) > 0) {
             while (is.read(buf)>0) {
                 //oos.write(buf);
-                String text = new String(buf);
+                String text = new String(buf,"utf-8");
 
-                if(text.equals(";"))
+                if(text.equals("~"))
                 {
                     i++;
-
+                    System.out.println(allText);
                     switch (i)
                     {
                         case 1: category = allText; FlashcardHelper.AddCategory(category); break;
@@ -326,6 +373,7 @@ public class GoogleDriveHelper {
                         case 6:
                         {
                             i=0;
+
                             //int id = MainActivity.dbFlashcard.AddFlashcardIfNotExist(flashcard);
                             int id = FlashcardHelper.AddFlashcardIfNotExist(flashcard);
                             if(id!=0)
@@ -342,7 +390,7 @@ public class GoogleDriveHelper {
                     allText+=text;
                 }
             }
-
+*/
             /*
             InputStream is = result.getDriveContents().getInputStream();
 
