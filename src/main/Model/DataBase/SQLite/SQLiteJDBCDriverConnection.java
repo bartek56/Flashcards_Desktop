@@ -38,6 +38,9 @@ public class SQLiteJDBCDriverConnection {
                 }
             }
             Class.forName("org.sqlite.JDBC");
+            File file = new File(DATABASE_FILE_LOCATION+""+DATABASE_FILE_NAME);
+            if(file.exists())
+                file.delete();
             //connection = DriverManager.getConnection("jdbc:sqlite:C:/sqlite/"+DATABASE_FILE_NAME);
             connection = DriverManager.getConnection("jdbc:sqlite:"+DATABASE_FILE_LOCATION+""+DATABASE_FILE_NAME);
             System.out.println("Opened database successfully");

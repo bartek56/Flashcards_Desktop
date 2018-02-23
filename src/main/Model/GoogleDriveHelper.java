@@ -186,11 +186,8 @@ public class GoogleDriveHelper {
     public static void WriteToFile()
     {
         try {
-        // First retrieve the file from the API.
-        //File file = service.files().get(fileId).execute();
 
             List<String> list = FlashcardHelper.GetAllFlashcardsAsStringList();
-
 
             File file = new File();
 
@@ -205,34 +202,13 @@ public class GoogleDriveHelper {
 
             byte[] bytes = baos.toByteArray();
 
-
             InputStream is = new ByteArrayInputStream(bytes);
 
+            FileContent mediaContent = new FileContent("text/plain", is);
 
-        // File's new metadata.
-            /*
-            file.setName(DATABASE_FILE_NAME);
+            System.out.println("fileID writeToFile: "+fileId);
+            service.files().update(fileId,file,mediaContent).execute();
 
-        file.setDescription("description");
-        file.setMimeType("text/plain");
-*/
-        // File's new content.
-
-        //java.io.File fileContent = new java.io.File("C:/sqlite/" + DATABASE_FILE_NAME);
-        //java.io.File fileContent = new java.io.File(SQLiteJDBCDriverConnection.DATABASE_FILE_LOCATION + DATABASE_FILE_NAME);
-       //file.setTrashed(true);
-
-        FileContent mediaContent = new FileContent("text/plain", is);
-
-
-        // Send the request to the API.
-        //File updatedFile = service.files().update(fileId, file, mediaContent).execute();
-
-        System.out.println("fileID writeToFile: "+fileId);
-        File updatedFile = service.files().update(fileId,file,mediaContent).execute();
-        //service.files().
-
-        //return updatedFile;
     } catch (IOException e) {
         System.out.println("An error occurred: " + e);
             error=true;
@@ -286,20 +262,11 @@ public class GoogleDriveHelper {
     private static void ReadFromFile(Drive service)
     {
 
-        //java.io.File file = new java.io.File(SQLiteJDBCDriverConnection.DATABASE_FILE_LOCATION + DATABASE_FILE_NAME);
-
         try {
-            //OutputStream oos = new FileOutputStream(file);
-            //Writer writer = new OutputStreamWriter(oos);
-
-
-            InputStream is = service.files().get(fileId).executeMediaAsInputStream();
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(service.files().get(fileId).executeMediaAsInputStream()));
-            //service.files().get(fileId).executeMediaAndDownloadTo(oos);
-            //service.files().get
 
-            StringBuilder builder = new StringBuilder();
+
             String line;
             String allText="";
             String category="";
@@ -308,7 +275,6 @@ public class GoogleDriveHelper {
 
             while ((line = reader.readLine()) != null)
             {
-                builder.append(line).append("\n");
                 for (char ch:line.toCharArray()) {
                     if(ch=='~')
                     {
@@ -324,7 +290,7 @@ public class GoogleDriveHelper {
                             case 6:
                             {
                                 i=0;
-                                int id = FlashcardHelper.AddFlashcardIfNotExist(flashcard);
+                                int id = FlashcardHelper.AddFlashcard(flashcard);
 
                                 if(id!=0)
                                 {
@@ -344,67 +310,6 @@ public class GoogleDriveHelper {
             }
 
             reader.close();
-
-            /*
-            byte[] buf = new byte[1];
-            int c;
-            String allText="";
-            int i=0;
-
-            Flashcard flashcard = new Flashcard("", "", "", "");
-            String category="";
-
-            //while ((c = is.read(buf)) > 0) {
-            while (is.read(buf)>0) {
-                //oos.write(buf);
-                String text = new String(buf,"utf-8");
-
-                if(text.equals("~"))
-                {
-                    i++;
-                    System.out.println(allText);
-                    switch (i)
-                    {
-                        case 1: category = allText; FlashcardHelper.AddCategory(category); break;
-                        case 2: flashcard.setEngWord(allText);  break;
-                        case 3: flashcard.setPlWord(allText); break;
-                        case 4: flashcard.setEngSentence(allText); break;
-                        case 5: flashcard.setPlSentence(allText); break;
-                        case 6:
-                        {
-                            i=0;
-
-                            //int id = MainActivity.dbFlashcard.AddFlashcardIfNotExist(flashcard);
-                            int id = FlashcardHelper.AddFlashcardIfNotExist(flashcard);
-                            if(id!=0)
-                            {
-                                FlashcardHelper.AddFlashcardToCategory(category,id);
-                            }
-                            break;
-                        }
-                    }
-                    allText="";
-                }
-                else
-                {
-                    allText+=text;
-                }
-            }
-*/
-            /*
-            InputStream is = result.getDriveContents().getInputStream();
-
-            byte[] buf = new byte[4096];
-            int c;
-            while ((c = is.read(buf, 0, buf.length)) > 0) {
-                oos.write(buf, 0, c);
-                oos.flush();
-            }
-            writer.close();
-
-
-            SQLiteDatabase.openOrCreateDatabase(file, null);
-            */
 
             System.out.println("Wczytano dane z Google Drive");
             //Log.d(TAG,"Wczytano dane z Google Drive");

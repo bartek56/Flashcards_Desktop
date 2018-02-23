@@ -34,7 +34,6 @@ import static Model.DataBase.SQLite.FlashcardHelper.*;
 import static Model.DataBase.SQLite.SQLiteJDBCDriverConnection.DATABASE_FILE_LOCATION;
 import static Model.DataBase.SQLite.SQLiteJDBCDriverConnection.DATABASE_FILE_NAME;
 import static Model.DataBase.SQLite.SQLiteJDBCDriverConnection.connect;
-import static Model.GoogleDriveHelper.isOpen;
 
 
 /**
@@ -388,7 +387,6 @@ public class MainWindowControler {
     public void Language_Click(ActionEvent actionEvent) {
 
 
-
         if(eng.isSelected())
         {
             System.out.println("eng");
@@ -428,7 +426,7 @@ public class MainWindowControler {
         }
 
         connect();
-        FlashcardHelper.CreateDefoulltsTables();
+        FlashcardHelper.CreateDefaultTables();
         Thread thread = new Thread(new Runnable(){
             @Override
             public void run() {
@@ -437,22 +435,25 @@ public class MainWindowControler {
         });
         thread.start();
 
-        while (thread.isAlive());
+        //while (thread.isAlive());
 
+    }
+
+    public void Refresh_Click()
+    {
         if(GoogleDriveHelper.error)
         {
             Message(GoogleDriveHelper.getErrorMessage());
             DisableButtons(true);
-            isOpen=false;
+            //isOpen=false;
             GoogleDriveHelper.removeError();
         }
         else
         {
             DisableButtons(false);
-            isOpen=true;
+            //isOpen=true;
             ReadFromDataBase_Click();
         }
-
     }
 
     public void DisableButtons(boolean isDisable){
@@ -462,7 +463,6 @@ public class MainWindowControler {
         bAddFlashcard.setDisable(isDisable);
         menuCategory.setDisable(isDisable);
     }
-
 
     public void EditCategory_Click(ActionEvent actionEvent) throws IOException {
 

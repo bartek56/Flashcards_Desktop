@@ -18,7 +18,7 @@ public class FlashcardHelper {
 
     public static boolean error=false;
     private static String errorMessage="";
-
+    
     public static void RenameCategory(String oldName, String newName)
     {
 
@@ -68,14 +68,14 @@ public class FlashcardHelper {
         }
         return null;
     }
-
-
+    
     public static List <String> GetCategories()
     {
         List <String> category = new ArrayList<>();
         try {
 
             Statement stmt = Model.DataBase.SQLite.SQLiteJDBCDriverConnection.connection.createStatement();
+
             ResultSet rs = stmt.executeQuery("SELECT name FROM sqlite_master WHERE type='table'");
 
             while ( rs.next() ) {
@@ -134,8 +134,7 @@ public class FlashcardHelper {
         }
         return flashcardList;
     }
-
-
+    
     public static List<FlashcardTableHelper> GetAllFlashcardsToTableHelper()
     {
         List<String> categoriesList = GetCategories();
@@ -359,7 +358,7 @@ public class FlashcardHelper {
 
     }
 
-    public static void CreateDefoulltsTables()
+    public static void CreateDefaultTables()
     {
         try
         {

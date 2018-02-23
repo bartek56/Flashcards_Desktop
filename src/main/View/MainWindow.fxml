@@ -34,6 +34,7 @@
             <MenuItem fx:id="bSaveFlashcardOnFile" onAction="#SaveOnFile_Click" text="Save on file" />
 
             <MenuItem fx:id="bReadFlashcardFromFile" onAction="#ReadFromFile_Click" text="Read from file" />
+            <MenuItem fx:id="bRefresh" onAction="#Refresh_Click" text="Pokaż w tabeli" />
 
 
             <MenuItem onAction="#Exit_Click" text="Exit" />
