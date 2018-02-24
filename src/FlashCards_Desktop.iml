@@ -7,8 +7,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="lib" level="project" />
-    <orderEntry type="library" name="FlashCards_Desktop" level="project" />
     <orderEntry type="library" name="com.opencsv:opencsv:4.1" level="project" />
+    <orderEntry type="library" name="lib" level="project" />
   </component>
 </module>

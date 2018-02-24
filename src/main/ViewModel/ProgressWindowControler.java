@@ -1,13 +1,12 @@
 package ViewModel;
 
 import Model.DataBase.CSVFile.CSVBackupRead;
+import Model.GoogleDriveHelper;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -41,7 +40,8 @@ public class ProgressWindowControler {
         progressBar.progressProperty().bind(csvBackupRead.progressProperty());
         lInfo.textProperty().bind(csvBackupRead.messageProperty());
 
-        csvBackupRead.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED, //
+/*
+        csvBackupRead.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED,
                 new EventHandler<WorkerStateEvent>() {
 
                     @Override
@@ -52,7 +52,29 @@ public class ProgressWindowControler {
                     }
                 });
 
-        new Thread(csvBackupRead).start();
+*/
+
+
+
+        csvBackupRead.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED,(WorkerStateEvent t)->{
+            bOk.setDisable(false);
+            lInfo.textProperty().unbind();
+            lInfo.setText("Wczytano " + csvBackupRead.getCount() + " pliki");
+        });
+
+        Thread thread = new Thread(csvBackupRead);
+        //thread.setDaemon(true);
+        thread.start();
+
+        /*
+
+        Thread thread2 = new Thread(()->{
+            csvBackupRead.start();
+        });
+
+        thread2.start();
+*/
+
     }
 
 

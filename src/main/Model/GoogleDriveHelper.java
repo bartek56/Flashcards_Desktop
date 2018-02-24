@@ -19,7 +19,10 @@ import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
 
+
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 
 import static Model.DataBase.SQLite.SQLiteJDBCDriverConnection.DATABASE_FILE_NAME;
@@ -196,7 +199,7 @@ public class GoogleDriveHelper {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
             for (String line : list) {
-                baos.write(line.getBytes());
+                baos.write(line.getBytes(StandardCharsets.UTF_8));
                 //baos.write('\n');
             }
 
@@ -264,12 +267,21 @@ public class GoogleDriveHelper {
 
         try {
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(service.files().get(fileId).executeMediaAsInputStream()));
-
+            BufferedReader reader = new BufferedReader(new InputStreamReader(service.files().get(fileId).executeMediaAsInputStream(), StandardCharsets.UTF_8));
 
             String line;
             String allText="";
             String category="";
+
+            String plWords="";
+            String engWords="";
+            String plSentences = "";
+            String engsentences ="";
+            String flashcards="";
+            List <String> categoryList = new ArrayList<>();
+            //List <String>
+
+
             int i=0;
             Flashcard flashcard = new Flashcard(null,null,null,null);
 
@@ -307,6 +319,7 @@ public class GoogleDriveHelper {
                         allText+=ch;
                     }
                 }
+
             }
 
             reader.close();

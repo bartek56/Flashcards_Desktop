@@ -427,6 +427,13 @@ public class MainWindowControler {
 
         connect();
         FlashcardHelper.CreateDefaultTables();
+        Thread thread = new Thread(()->{
+            GoogleDriveHelper.ConnectWithGoogle();
+        });
+
+        thread.start();
+
+        /*
         Thread thread = new Thread(new Runnable(){
             @Override
             public void run() {
@@ -434,7 +441,7 @@ public class MainWindowControler {
             }
         });
         thread.start();
-
+*/
         //while (thread.isAlive());
 
     }
@@ -445,13 +452,11 @@ public class MainWindowControler {
         {
             Message(GoogleDriveHelper.getErrorMessage());
             DisableButtons(true);
-            //isOpen=false;
             GoogleDriveHelper.removeError();
         }
         else
         {
             DisableButtons(false);
-            //isOpen=true;
             ReadFromDataBase_Click();
         }
     }
@@ -520,6 +525,7 @@ public class MainWindowControler {
                 root1 = (Parent) fxmlLoader.load();
             } catch (IOException e) {
                 e.printStackTrace();
+
             }
 
             ProgressWindowControler controller = fxmlLoader.<ProgressWindowControler>getController();
