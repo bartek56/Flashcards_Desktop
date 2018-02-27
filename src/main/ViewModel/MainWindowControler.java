@@ -3,10 +3,12 @@ package ViewModel;
 import Model.DataBase.CSVFile.CSVBackupRead;
 import Model.DataBase.CSVFile.CSVBackupSave;
 import Model.DataBase.GoogleDrive.GoogleDriveConnect;
+import Model.DataBase.GoogleDrive.GoogleDriveSave;
 import Model.DataBase.SQLite.FlashcardHelper;
 import Model.DataBase.SQLite.Tables.Flashcard;
 import Model.FlashcardTableHelper;
 import Model.GoogleDriveHelper;
+import com.google.api.services.drive.Drive;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.sun.corba.se.impl.orbutil.closure.Future;
@@ -19,6 +21,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -46,6 +49,10 @@ import static Model.DataBase.SQLite.SQLiteJDBCDriverConnection.connect;
  * Created by Bartek on 2017-09-05.
  */
 public class MainWindowControler {
+
+
+    private Drive service;
+    private String fileId=null;
 
     @FXML
     public TableView<FlashcardTableHelper> flashcardsTable;
@@ -254,27 +261,25 @@ public class MainWindowControler {
 
     public void SaveOnDataBase_Click(ActionEvent actionEvent) {
 
+        GoogleDriveSave googleDriveSave = new GoogleDriveSave(service,fileId);
 
-        Thread thread = new Thread(new Runnable(){
-            @Override
-            public void run() {
-                GoogleDriveHelper.WriteToFile();
+        googleDriveSave.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED,(WorkerStateEvent t)->{
+
+            if(googleDriveSave.isSaved())
+            {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Zapisano na Google Drive", ButtonType.OK);
+                alert.showAndWait();
             }
+            else
+            {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Nie można zapisać na Google Drive", ButtonType.OK);
+                alert.showAndWait();
+            }
+
         });
+
+        Thread thread = new Thread(googleDriveSave);
         thread.start();
-
-        while (thread.isAlive());
-
-        if(GoogleDriveHelper.error)
-        {
-            Message(GoogleDriveHelper.getErrorMessage());
-            GoogleDriveHelper.removeError();
-        }
-        else
-        {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Zapisano na Google Drive", ButtonType.OK);
-            alert.showAndWait();
-        }
 
     }
 
@@ -357,7 +362,7 @@ public class MainWindowControler {
     }
 
     public void Exit_Click(ActionEvent actionEvent) {
-
+        /*
         if(GoogleDriveHelper.isOpen)
         {
             Alert alert = new Alert(Alert.AlertType.NONE, "Save Changes ?", ButtonType.YES, ButtonType.NO,ButtonType.CANCEL);
@@ -380,6 +385,7 @@ public class MainWindowControler {
 
         }
         else
+        */
         {
             Stage stage = (Stage) cbFlashcardCategory.getScene().getWindow();
             // do what you have to do
@@ -431,14 +437,22 @@ public class MainWindowControler {
             engSentenceColumn.setText("Zdanie Fr");
         }
 
+
+        primaryStage.getScene().setCursor(Cursor.WAIT);
         connect(); // connect with Sqlite
         FlashcardHelper.CreateDefaultTables();
 
         GoogleDriveConnect googleDriveConnect = new GoogleDriveConnect();
 
         googleDriveConnect.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED,(WorkerStateEvent t)->{
-            System.out.println(googleDriveConnect.isConnect());
-
+            if(googleDriveConnect.isConnect())
+            {
+                fileId = googleDriveConnect.getFileId();
+                service = googleDriveConnect.getService();
+                DisableButtons(false);
+                ReadFromDataBase_Click();
+                primaryStage.getScene().setCursor(Cursor.DEFAULT);
+            }
         });
 
 
@@ -506,6 +520,7 @@ public class MainWindowControler {
 
     public void Refresh_Click()
     {
+        /*
         if(GoogleDriveHelper.error)
         {
             Message(GoogleDriveHelper.getErrorMessage());
@@ -517,6 +532,7 @@ public class MainWindowControler {
             DisableButtons(false);
             ReadFromDataBase_Click();
         }
+        */
     }
 
     public void DisableButtons(boolean isDisable){
