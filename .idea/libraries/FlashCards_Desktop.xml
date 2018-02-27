@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="FlashCards_Desktop">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/out/artifacts/FlashCards_Desktop_jar/FlashCards_Desktop.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

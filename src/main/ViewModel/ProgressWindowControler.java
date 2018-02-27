@@ -59,7 +59,7 @@ public class ProgressWindowControler {
         csvBackupRead.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED,(WorkerStateEvent t)->{
             bOk.setDisable(false);
             lInfo.textProperty().unbind();
-            lInfo.setText("Wczytano " + csvBackupRead.getCount() + " pliki");
+            lInfo.setText("Wczytano " + csvBackupRead.getCount() + " słówka");
         });
 
         Thread thread = new Thread(csvBackupRead);

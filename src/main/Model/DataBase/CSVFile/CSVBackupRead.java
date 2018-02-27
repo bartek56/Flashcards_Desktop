@@ -27,48 +27,6 @@ public class CSVBackupRead extends Task<List<String[]>> {
     }
 
 
-    public void start()
-    {
-
-        try {
-            CSVReader csvReader;
-            csvReader = new CSVReader(new FileReader(file.getAbsolutePath()));
-            //csvReader = new CSVReader(new InputStreamReader(new FileInputStream(file),StandardCharsets.UTF_8));
-
-            int wordNumber = 0;
-            List<String[]> flashcardsFromFileList = csvReader.readAll();
-            count = flashcardsFromFileList.size();
-
-
-            //while ((nextLine = csvReader.readNext()) != null) {
-            for (String[] nextLine : flashcardsFromFileList) {
-
-                //System.out.println(nextLine[0]+" "+nextLine[1]+" "+nextLine[2]+" "+nextLine[3]);
-                Flashcard flashcard = new Flashcard(nextLine[0], nextLine[1], nextLine[2], nextLine[3]);
-                String category = nextLine[4];
-                List<Flashcard> flashcardList = FlashcardHelper.FlashcardExist(flashcard.getEngWord(), flashcard.getPlWord());
-
-                if (flashcardList.isEmpty()) {
-                    FlashcardHelper.AddCategory(category);
-                    int id = FlashcardHelper.AddFlashcard(flashcard);
-
-                    FlashcardHelper.AddFlashcardToCategory(category, id);
-
-                    this.copy(flashcard.getPlWord() + " " + flashcard.getEngWord());
-                    this.updateProgress(wordNumber, flashcardsFromFileList.size());
-
-                }
-                wordNumber++;
-
-            }
-        }
-        catch (Exception ex)
-        {
-            System.out.println(ex);
-        }
-    }
-
-
     @Override
     protected List<String[]> call() throws Exception {
         CSVReader csvReader;
@@ -78,7 +36,6 @@ public class CSVBackupRead extends Task<List<String[]>> {
         int wordNumber=0;
         List<String[]> flashcardsFromFileList = csvReader.readAll();
         count = flashcardsFromFileList.size();
-
 
         //while ((nextLine = csvReader.readNext()) != null) {
         for(String[] nextLine:flashcardsFromFileList){

@@ -1,14 +1,20 @@
 package ViewModel;
 
+import Model.DataBase.CSVFile.CSVBackupRead;
 import Model.DataBase.CSVFile.CSVBackupSave;
+import Model.DataBase.GoogleDrive.GoogleDriveConnect;
 import Model.DataBase.SQLite.FlashcardHelper;
 import Model.DataBase.SQLite.Tables.Flashcard;
 import Model.FlashcardTableHelper;
 import Model.GoogleDriveHelper;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.sun.corba.se.impl.orbutil.closure.Future;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -425,13 +431,65 @@ public class MainWindowControler {
             engSentenceColumn.setText("Zdanie Fr");
         }
 
-        connect();
+        connect(); // connect with Sqlite
         FlashcardHelper.CreateDefaultTables();
+
+        GoogleDriveConnect googleDriveConnect = new GoogleDriveConnect();
+
+        googleDriveConnect.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED,(WorkerStateEvent t)->{
+            System.out.println(googleDriveConnect.isConnect());
+
+        });
+
+
+
+/*
+        csvBackupRead.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED,
+                new EventHandler<WorkerStateEvent>() {
+
+                    @Override
+                    public void handle(WorkerStateEvent t) {
+                        bOk.setDisable(false);
+                        lInfo.textProperty().unbind();
+                        lInfo.setText("Wczytano " + csvBackupRead.getCount() + " pliki");
+                    }
+                });
+
+*/
+
+
+
+
+        Thread thread = new Thread(googleDriveConnect);
+        //thread.setDaemon(true);
+        thread.start();
+
+       /*
         Thread thread = new Thread(()->{
             GoogleDriveHelper.ConnectWithGoogle();
         });
+        */
+/*
+        thread.setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler(){
 
-        thread.start();
+            @Override
+            public void uncaughtException(Thread t, Throwable e) {
+                t.getThreadGroup().uncaughtException(t,e);
+            }
+
+            protected void finalize() throws Throwable{
+                //cool, we go notified
+                //handle the notification, but be worried, it's the finalizer thread w/ max priority
+                System.out.println("end");
+                Refresh_Click();
+            }
+
+        });
+*/
+
+
+        //thread.start();
+
 
         /*
         Thread thread = new Thread(new Runnable(){

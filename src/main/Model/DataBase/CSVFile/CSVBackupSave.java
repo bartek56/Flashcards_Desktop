@@ -7,9 +7,8 @@ import com.opencsv.CSVWriter;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.List;
@@ -23,6 +22,8 @@ public class CSVBackupSave {
 
 
         csvWriter = new CSVWriter(new FileWriter(file.getAbsolutePath()));
+        //csvWriter = new CSVWriter(new OutputStreamWriter(new FileOutputStream(file),StandardCharsets.UTF_8));
+        //csvReader = new CSVReader(new InputStreamReader(new FileInputStream(file),StandardCharsets.UTF_8));
 
 
 
