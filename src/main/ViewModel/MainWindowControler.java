@@ -50,9 +50,9 @@ import static Model.DataBase.SQLite.SQLiteJDBCDriverConnection.connect;
  */
 public class MainWindowControler {
 
-
     private Drive service;
     private String fileId=null;
+    public boolean isConnected=false;
 
     @FXML
     public TableView<FlashcardTableHelper> flashcardsTable;
@@ -259,12 +259,21 @@ public class MainWindowControler {
         engSentenceText.clear();
     }
 
+    public void SaveOnDataBase() {
+
+        GoogleDriveSave googleDriveSave = new GoogleDriveSave(service,fileId);
+        Thread thread = new Thread(googleDriveSave);
+        thread.start();
+
+    }
+
     public void SaveOnDataBase_Click(ActionEvent actionEvent) {
 
         GoogleDriveSave googleDriveSave = new GoogleDriveSave(service,fileId);
 
         googleDriveSave.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED,(WorkerStateEvent t)->{
 
+            primaryStage.getScene().setCursor(Cursor.DEFAULT);
             if(googleDriveSave.isSaved())
             {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "Zapisano na Google Drive", ButtonType.OK);
@@ -277,7 +286,7 @@ public class MainWindowControler {
             }
 
         });
-
+        primaryStage.getScene().setCursor(Cursor.WAIT);
         Thread thread = new Thread(googleDriveSave);
         thread.start();
 
@@ -362,9 +371,9 @@ public class MainWindowControler {
     }
 
     public void Exit_Click(ActionEvent actionEvent) {
-        /*
-        if(GoogleDriveHelper.isOpen)
-        {
+
+        //if(GoogleDriveHelper.isOpen)
+        //{
             Alert alert = new Alert(Alert.AlertType.NONE, "Save Changes ?", ButtonType.YES, ButtonType.NO,ButtonType.CANCEL);
             alert.showAndWait();
 
@@ -383,16 +392,16 @@ public class MainWindowControler {
                 System.exit(0);
             }
 
+            /*
         }
         else
-        */
         {
             Stage stage = (Stage) cbFlashcardCategory.getScene().getWindow();
             // do what you have to do
             stage.close();
             System.exit(0);
         }
-
+*/
 
     }
 
@@ -449,7 +458,9 @@ public class MainWindowControler {
             {
                 fileId = googleDriveConnect.getFileId();
                 service = googleDriveConnect.getService();
+                isConnected=true;
                 DisableButtons(false);
+                FlashcardHelper.Commit();
                 ReadFromDataBase_Click();
                 primaryStage.getScene().setCursor(Cursor.DEFAULT);
             }
@@ -533,6 +544,7 @@ public class MainWindowControler {
             ReadFromDataBase_Click();
         }
         */
+        //ReadFromDataBase_Click();
     }
 
     public void DisableButtons(boolean isDisable){

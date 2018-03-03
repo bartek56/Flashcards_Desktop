@@ -34,13 +34,15 @@ public class Start extends Application {
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent event) {
-                if(GoogleDriveHelper.isOpen)
+                if(controller.isConnected)
                 {
                     Alert alert = new Alert(Alert.AlertType.NONE, "Save Changes ?", ButtonType.YES, ButtonType.NO);
                     alert.showAndWait();
 
                     if (alert.getResult() == ButtonType.YES)
-                        GoogleDriveHelper.WriteToFile();
+                    {
+                        controller.SaveOnDataBase();
+                    }
                 }
             }
         });

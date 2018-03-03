@@ -24,11 +24,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static Model.DataBase.SQLite.SQLiteJDBCDriverConnection.DATABASE_FILE_NAME;
-import static Model.GoogleDriveHelper.getDriveService;
 
 public class GoogleDriveConnect extends Task<Boolean> {
 
@@ -169,44 +167,51 @@ public class GoogleDriveConnect extends Task<Boolean> {
 
             String line;
             String allText="";
-            String category="";
+            String category="inne";
 
-            String plWords="";
-            String engWords="";
-            String plSentences = "";
-            String engsentences ="";
-            String flashcards="";
-            List<String> categoryList = new ArrayList<>();
-            //List <String>
+            Queue<String> engWord= new ArrayDeque<String>();
+            Queue<String> plWord=new ArrayDeque<String>();
+            Queue<String> engSentence=new ArrayDeque<String>();
+            Queue<String> plSentence=new ArrayDeque<String>();
+
+            Queue<Integer> idFlashcardQueue =new ArrayDeque<Integer>();
 
 
-            int i=0;
-            Flashcard flashcard = new Flashcard(null,null,null,null);
+            int idFlashcard =0;
+            int columnNumber=0;
 
             while ((line = reader.readLine()) != null)
             {
                 for (char ch:line.toCharArray()) {
                     if(ch=='~')
                     {
-                        i++;
+                        columnNumber++;
 
-                        switch (i)
+                        switch (columnNumber)
                         {
-                            case 1: category = allText; FlashcardHelper.AddCategory(category);  break;
-                            case 2: flashcard.setEngWord(allText);  break;
-                            case 3: flashcard.setPlWord(allText); break;
-                            case 4: flashcard.setEngSentence(allText); break;
-                            case 5: flashcard.setPlSentence(allText); break;
-                            case 6:
+                            case 1:
                             {
-                                i=0;
-                                int id = FlashcardHelper.AddFlashcard(flashcard);
-
-                                if(id!=0)
+                                // czy znaleziono nową kategorię?
+                                
+                                if(!allText.equals(category))
                                 {
-                                    FlashcardHelper.AddFlashcardToCategory(category,id);
+                                    FlashcardHelper.AddCategory(allText);
+                                    FlashcardHelper.AddFlashcardsFromGoogle(engWord, plWord, engSentence, plSentence);
+                                    FlashcardHelper.AddFlashcardsToCategory(idFlashcardQueue,category);
+                                    category=allText;
                                 }
 
+                                break;
+                            }
+                            case 2: engWord.add(allText); break;
+                            case 3: plWord.add(allText); break;
+                            case 4: engSentence.add(allText); break;
+                            case 5: plSentence.add(allText); break;
+                            case 6:
+                            {
+                                columnNumber=0;
+                                idFlashcard++;
+                                idFlashcardQueue.add(idFlashcard);
                                 break;
                             }
                         }
@@ -221,6 +226,10 @@ public class GoogleDriveConnect extends Task<Boolean> {
             }
 
             reader.close();
+
+            FlashcardHelper.AddFlashcardsFromGoogle(engWord, plWord, engSentence, plSentence);
+            FlashcardHelper.AddFlashcardsToCategory(idFlashcardQueue,category);
+            idFlashcard=0;
 
             System.out.println("Wczytano dane z Google Drive");
             //Log.d(TAG,"Wczytano dane z Google Drive");

@@ -1,6 +1,7 @@
 package ViewModel;
 
 import Model.DataBase.CSVFile.CSVBackupRead;
+import Model.DataBase.SQLite.FlashcardHelper;
 import Model.GoogleDriveHelper;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
@@ -59,6 +60,7 @@ public class ProgressWindowControler {
         csvBackupRead.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED,(WorkerStateEvent t)->{
             bOk.setDisable(false);
             lInfo.textProperty().unbind();
+            FlashcardHelper.Commit();
             lInfo.setText("Wczytano " + csvBackupRead.getCount() + " słówka");
         });
 

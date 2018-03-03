@@ -7,9 +7,11 @@ import javafx.scene.control.ButtonType;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 
 /**
  * Created by Bartek on 2017-09-14.
@@ -341,7 +343,9 @@ public class FlashcardHelper {
     {
         try
         {
+
             String category2 = category.replace(" ","_");
+
             Statement statement = SQLiteJDBCDriverConnection.connection.createStatement();
             String sql2 = "create table if not exists "+category2+"(" +
                     "id integer primary key autoincrement," +
@@ -413,6 +417,15 @@ public class FlashcardHelper {
 
     }
 
+    public static void Commit()
+    {
+        try {
+            SQLiteJDBCDriverConnection.connection.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     private static void DeleteCategory(String category)
     {
         try
@@ -473,4 +486,56 @@ public class FlashcardHelper {
         return flashcardList;
     }
 
+    public static void AddFlashcardsFromGoogle(Queue<String> engWord, Queue<String> plWord, Queue<String> engSentence, Queue<String> plSentence)
+    {
+        try
+        {
+            String sql = "INSERT INTO flashcard(engWord, plWord, engSentence, plSentence) VALUES(?,?,?,?) ";
+            PreparedStatement pstmt = SQLiteJDBCDriverConnection.connection.prepareStatement(sql);
+            //Statement pstm = SQLiteJDBCDriverConnection.connection.createStatement();
+            while (!engWord.isEmpty())
+            {
+
+                pstmt.setString(1, engWord.remove());
+                pstmt.setString(2, plWord.remove());
+                pstmt.setString(3, engSentence.remove());
+                pstmt.setString(4, plSentence.remove());
+
+                pstmt.addBatch();
+            }
+
+            pstmt.executeBatch();
+            pstmt.close();
+
+        } catch (Exception ex) {
+            System.err.println("AddFlashcardsFromGoogle: "+ ex +" "+ ex.getMessage());
+            Message("AddFlashcardsFromGoogle: "+ ex );
+        }
+
+
+    }
+
+    public static void AddFlashcardsToCategory(Queue<Integer> idFlashcardQueue, String category) {
+
+        try
+        {
+            //String category2 = category.replace(" ","_");
+            String sql = "INSERT INTO "+category+" (idFlashcard) VALUES(?)";
+            PreparedStatement pstmt = SQLiteJDBCDriverConnection.connection.prepareStatement(sql);
+
+            //Statement pstmt = SQLiteJDBCDriverConnection.connection.createStatement();
+            while (!idFlashcardQueue.isEmpty())
+            {
+                pstmt.setInt(1, idFlashcardQueue.remove());
+                //pstmt.addBatch("INSERT INTO "+category+" (idFlashcard) VALUES("+idFlashcardQueue.remove()+")");
+                pstmt.addBatch();
+            }
+            pstmt.executeBatch();
+            pstmt.close();
+            //pstmt.clearParameters();
+        } catch (Exception ex) {
+            System.err.println("AddFlashcardsToCategory: "+ ex +" "+ ex.getMessage());
+            Message("AddFlashcardsToCategory: "+ ex );
+        }
+    }
 }
