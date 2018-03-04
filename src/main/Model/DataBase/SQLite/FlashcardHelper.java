@@ -70,7 +70,35 @@ public class FlashcardHelper {
         }
         return null;
     }
-    
+
+    public static List <String> GetCategoriesWithoutSign()
+    {
+        List <String> category = new ArrayList<>();
+        try {
+
+            Statement stmt = Model.DataBase.SQLite.SQLiteJDBCDriverConnection.connection.createStatement();
+
+            ResultSet rs = stmt.executeQuery("SELECT name FROM sqlite_master WHERE type='table'");
+
+            while ( rs.next() ) {
+
+                String column = rs.getString(1);
+                if(!column.equals("android_metadata") && !column.equals("sqlite_sequence") && !column.equals("flashcard"))
+                {
+                    category.add(column);
+                }
+            }
+
+        }
+        catch (Exception ex)
+        {
+            System.err.println("GetFlashcardFromCategory: "+ex);
+
+            Message("GetFlashcardFromCategory: "+ex+ " "+ex.getMessage());
+        }
+        return category;
+    }
+
     public static List <String> GetCategories()
     {
         List <String> category = new ArrayList<>();
@@ -102,21 +130,21 @@ public class FlashcardHelper {
 
     public static List<String> GetAllFlashcardsAsStringList()
     {
-        List<String> categoriesList = GetCategories();
+        List<String> categoriesList = GetCategoriesWithoutSign();
         List<String> flashcardList = new ArrayList<>();
 
         for(String category : categoriesList) {
             try {
-                String category2 = category.replace(" ","_");
+
                 Statement stmt = SQLiteJDBCDriverConnection.connection.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT idFlashcard, known FROM " + category2 + " ");
+                ResultSet rs = stmt.executeQuery("SELECT idFlashcard, known FROM " + category + " ");
 
                 while (rs.next()) {
 
                     int idFlashcard = rs.getInt(1);
                     Flashcard flashcard = GetFlashcard(idFlashcard);
 
-                    String flashcardString = category2+"~"+
+                    String flashcardString = category+"~"+
                             flashcard.getEngWord()+"~"+
                             flashcard.getPlWord()+"~"+
                             flashcard.getEngSentence()+"~"+

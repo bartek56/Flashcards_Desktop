@@ -192,7 +192,7 @@ public class GoogleDriveConnect extends Task<Boolean> {
                             case 1:
                             {
                                 // czy znaleziono nową kategorię?
-                                
+
                                 if(!allText.equals(category))
                                 {
                                     FlashcardHelper.AddCategory(allText);
