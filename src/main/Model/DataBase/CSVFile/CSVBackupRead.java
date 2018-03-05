@@ -35,7 +35,7 @@ public class CSVBackupRead extends Task<List<String[]>> {
 
         int wordNumber=0;
         List<String[]> flashcardsFromFileList = csvReader.readAll();
-        count = flashcardsFromFileList.size();
+        //count = flashcardsFromFileList.size();
 
         //while ((nextLine = csvReader.readNext()) != null) {
         for(String[] nextLine:flashcardsFromFileList){
@@ -47,13 +47,14 @@ public class CSVBackupRead extends Task<List<String[]>> {
 
             if(flashcardList.isEmpty())
             {
+                count ++;
                 FlashcardHelper.AddCategory(category);
                 int id = FlashcardHelper.AddFlashcard(flashcard);
 
                 FlashcardHelper.AddFlashcardToCategory(category,id);
 
                 this.copy(flashcard.getPlWord() + " " +flashcard.getEngWord());
-                this.updateProgress(wordNumber,flashcardsFromFileList.size());
+                //this.updateProgress(wordNumber,flashcardsFromFileList.size());
 
             }
             wordNumber++;

@@ -30,7 +30,7 @@ public class FlashcardHelper {
             String sql = "ALTER TABLE "+oldNameTable+" RENAME TO "+newNameTable+"";
             PreparedStatement pstmt = SQLiteJDBCDriverConnection.connection.prepareStatement(sql);
             pstmt.executeUpdate();
-
+            SQLiteJDBCDriverConnection.connection.commit();
         }
         catch (Exception ex)
         {
@@ -43,10 +43,10 @@ public class FlashcardHelper {
 
     }
 
-    public static String GetFlashCardCategorie(Flashcard flashcard)
+    public static String GetFlashCardCategory(String id)
     {
 
-        List <String> categoriesList = GetCategories();
+        List <String> categoriesList = GetCategoriesWithoutSign();
 
 
         for (String category : categoriesList) {
@@ -54,7 +54,7 @@ public class FlashcardHelper {
             try {
 
                 Statement stmt = Model.DataBase.SQLite.SQLiteJDBCDriverConnection.connection.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT idFlashcard FROM "+ category +" ");
+                ResultSet rs = stmt.executeQuery("SELECT idFlashcard FROM "+ category +" WHERE idFlashcard="+id+" ");
 
                 while (rs.next()) {
 
@@ -445,10 +445,10 @@ public class FlashcardHelper {
 
     }
 
-    public static void Commit()
+    public static void SetAutoCommit(boolean b)
     {
         try {
-            SQLiteJDBCDriverConnection.connection.commit();
+            SQLiteJDBCDriverConnection.connection.setAutoCommit(b);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -521,6 +521,7 @@ public class FlashcardHelper {
             String sql = "INSERT INTO flashcard(engWord, plWord, engSentence, plSentence) VALUES(?,?,?,?) ";
             PreparedStatement pstmt = SQLiteJDBCDriverConnection.connection.prepareStatement(sql);
             //Statement pstm = SQLiteJDBCDriverConnection.connection.createStatement();
+            //SQLiteJDBCDriverConnection.connection.setAutoCommit(false);
             while (!engWord.isEmpty())
             {
 
@@ -533,6 +534,9 @@ public class FlashcardHelper {
             }
 
             pstmt.executeBatch();
+
+            ///SQLiteJDBCDriverConnection.connection.commit();
+
             pstmt.close();
 
         } catch (Exception ex) {
@@ -560,10 +564,20 @@ public class FlashcardHelper {
             }
             pstmt.executeBatch();
             pstmt.close();
+            //SQLiteJDBCDriverConnection.connection.commit();
+
             //pstmt.clearParameters();
         } catch (Exception ex) {
             System.err.println("AddFlashcardsToCategory: "+ ex +" "+ ex.getMessage());
             Message("AddFlashcardsToCategory: "+ ex );
+        }
+    }
+
+    public static void Commit() {
+        try {
+            SQLiteJDBCDriverConnection.connection.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

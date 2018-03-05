@@ -1,6 +1,5 @@
 package ViewModel;
 
-import Model.DataBase.CSVFile.CSVBackupRead;
 import Model.DataBase.CSVFile.CSVBackupSave;
 import Model.DataBase.GoogleDrive.GoogleDriveConnect;
 import Model.DataBase.GoogleDrive.GoogleDriveSave;
@@ -9,9 +8,6 @@ import Model.DataBase.SQLite.Tables.Flashcard;
 import Model.FlashcardTableHelper;
 import Model.GoogleDriveHelper;
 import com.google.api.services.drive.Drive;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.sun.corba.se.impl.orbutil.closure.Future;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
@@ -236,12 +232,12 @@ public class MainWindowControler {
                 String text = "";
                 for (Flashcard f : flashcards) {
                     String id = Integer.toString(f.getId());
-                    String category = GetFlashCardCategorie(f);
-                    text += id + " " + f.getPlWord() + " " + f.getEngWord() + ", kategoria: " + category;
+                    String category = GetFlashCardCategory(id);
+                    text += id + " " + f.getPlWord() + " " + f.getEngWord() + ", kategoria: " + category + "\n" ;
                 }
 
-                Alert alert = new Alert(Alert.AlertType.NONE, "Słówko " + engWordText.getText() + ", " + plWordText.getText() + " istnieje jako: " + text +
-                        ", czy chcesz stworzyć kolejne takie same?", ButtonType.YES, ButtonType.NO);
+                Alert alert = new Alert(Alert.AlertType.NONE, "Słówko " + engWordText.getText() + ", " + plWordText.getText() + " istnieje jako:\n" + text +
+                        ", czy chcesz dodać nowe słowo?", ButtonType.YES, ButtonType.NO);
                 alert.showAndWait();
 
                 if (alert.getResult() == ButtonType.YES) {
@@ -450,10 +446,14 @@ public class MainWindowControler {
         primaryStage.getScene().setCursor(Cursor.WAIT);
         connect(); // connect with Sqlite
         FlashcardHelper.CreateDefaultTables();
+        FlashcardHelper.SetAutoCommit(false);
+
 
         GoogleDriveConnect googleDriveConnect = new GoogleDriveConnect();
 
         googleDriveConnect.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED,(WorkerStateEvent t)->{
+            primaryStage.getScene().setCursor(Cursor.DEFAULT);
+
             if(googleDriveConnect.isConnect())
             {
                 fileId = googleDriveConnect.getFileId();
@@ -462,70 +462,17 @@ public class MainWindowControler {
                 DisableButtons(false);
                 FlashcardHelper.Commit();
                 ReadFromDataBase_Click();
-                primaryStage.getScene().setCursor(Cursor.DEFAULT);
             }
+            else
+            {
+                Message("Błąd odczytu danych z Google Drive");
+            }
+            FlashcardHelper.SetAutoCommit(true);
         });
-
-
-
-/*
-        csvBackupRead.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED,
-                new EventHandler<WorkerStateEvent>() {
-
-                    @Override
-                    public void handle(WorkerStateEvent t) {
-                        bOk.setDisable(false);
-                        lInfo.textProperty().unbind();
-                        lInfo.setText("Wczytano " + csvBackupRead.getCount() + " pliki");
-                    }
-                });
-
-*/
-
-
 
 
         Thread thread = new Thread(googleDriveConnect);
-        //thread.setDaemon(true);
         thread.start();
-
-       /*
-        Thread thread = new Thread(()->{
-            GoogleDriveHelper.ConnectWithGoogle();
-        });
-        */
-/*
-        thread.setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler(){
-
-            @Override
-            public void uncaughtException(Thread t, Throwable e) {
-                t.getThreadGroup().uncaughtException(t,e);
-            }
-
-            protected void finalize() throws Throwable{
-                //cool, we go notified
-                //handle the notification, but be worried, it's the finalizer thread w/ max priority
-                System.out.println("end");
-                Refresh_Click();
-            }
-
-        });
-*/
-
-
-        //thread.start();
-
-
-        /*
-        Thread thread = new Thread(new Runnable(){
-            @Override
-            public void run() {
-                GoogleDriveHelper.ConnectWithGoogle();
-            }
-        });
-        thread.start();
-*/
-        //while (thread.isAlive());
 
     }
 
@@ -621,7 +568,7 @@ public class MainWindowControler {
             Stage stage = new Stage();
             stage.setResizable(false);
             stage.setAlwaysOnTop(true);
-            stage.initStyle(StageStyle.UNDECORATED);
+            //stage.initStyle(StageStyle.UNDECORATED);
             stage.setTitle("Wczytywanie");
             stage.setScene(new Scene(root1));
             stage.show();
@@ -671,4 +618,10 @@ public class MainWindowControler {
     {
         return actualLanguage;
     }
+
+    public Stage getPrimarystage()
+    {
+        return primaryStage;
+    }
+
 }
