@@ -12,6 +12,8 @@ import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.util.Data;
+import com.google.api.client.util.DateTime;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
@@ -19,6 +21,7 @@ import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
 import javafx.concurrent.Task;
 
+import javax.xml.datatype.DatatypeConfigurationException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,6 +35,7 @@ public class GoogleDriveConnect extends Task<Boolean> {
 
     private Drive service;
     private String fileId=null;
+    private String folderId=null;
     private File fileGoogle;
     private static final java.io.File DATA_STORE_DIR_GOOGLEDRIVE = new java.io.File(
             System.getProperty("user.home"), "Documents/Flashcards/googleClient");
@@ -100,15 +104,20 @@ public class GoogleDriveConnect extends Task<Boolean> {
             String pageToken = null;
             fileId = null;
             do {
+
                 FileList result = service.files().list()
                         .setQ("mimeType='text/plain'")
                         .setSpaces("drive")
                         .setFields("nextPageToken, files(id, name)")
                         .setPageToken(pageToken)
                         .execute();
+
                 for (File file : result.getFiles()) {
+                    System.out.println( file.getName());
                     if (file.getName().equals(GetCsvFileName(DATABASE_FILE_NAME))) {
                         fileId = file.getId();
+                        //DateTime data = file.getModifiedTime();
+                        //System.out.println("data: "+data);
                         System.out.println("DataBase file Exist id: "+fileId);
 
                         fileGoogle = file;
@@ -118,8 +127,6 @@ public class GoogleDriveConnect extends Task<Boolean> {
                 pageToken = result.getNextPageToken();
             } while (pageToken != null);
 
-
-            System.out.println("fileID: "+fileId);
 
             if (fileId == null) {
                 System.err.println("nie ma pliku");
@@ -133,7 +140,6 @@ public class GoogleDriveConnect extends Task<Boolean> {
                 isConnect=true;
                 ReadFromFile();
                 return true;
-                //
             }
         }
         catch (Exception ex)
@@ -175,7 +181,6 @@ public class GoogleDriveConnect extends Task<Boolean> {
             Queue<String> plSentence=new ArrayDeque<String>();
 
             Queue<Integer> idFlashcardQueue =new ArrayDeque<Integer>();
-
 
             int idFlashcard =0;
             int columnNumber=0;
@@ -222,7 +227,6 @@ public class GoogleDriveConnect extends Task<Boolean> {
                         allText+=ch;
                     }
                 }
-
             }
 
             reader.close();

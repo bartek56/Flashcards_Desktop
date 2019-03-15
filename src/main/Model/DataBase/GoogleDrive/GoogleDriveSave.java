@@ -36,6 +36,7 @@ public class GoogleDriveSave extends Task<Boolean> {
 
             file.setMimeType("text/plain");
 
+
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
             for (String line : list) {

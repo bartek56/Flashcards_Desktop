@@ -23,9 +23,6 @@ public class CSVBackupSave {
 
         csvWriter = new CSVWriter(new FileWriter(file.getAbsolutePath()));
         //csvWriter = new CSVWriter(new OutputStreamWriter(new FileOutputStream(file),StandardCharsets.UTF_8));
-        //csvReader = new CSVReader(new InputStreamReader(new FileInputStream(file),StandardCharsets.UTF_8));
-
-
 
         for(String category : categoriesList) {
 
