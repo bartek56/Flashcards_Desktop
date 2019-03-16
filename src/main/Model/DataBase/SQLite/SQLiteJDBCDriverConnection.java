@@ -17,7 +17,6 @@ public class SQLiteJDBCDriverConnection {
     public static boolean error=false;
     private static String errorMessage="";
 
-
     public static void connect() {
 
         try {
@@ -41,9 +40,8 @@ public class SQLiteJDBCDriverConnection {
             File file = new File(DATABASE_FILE_LOCATION+""+DATABASE_FILE_NAME);
             if(file.exists())
                 file.delete();
-            //connection = DriverManager.getConnection("jdbc:sqlite:C:/sqlite/"+DATABASE_FILE_NAME);
+
             connection = DriverManager.getConnection("jdbc:sqlite:"+DATABASE_FILE_LOCATION+""+DATABASE_FILE_NAME);
-            //connection.setAutoCommit(false);
             System.out.println("Opened database successfully");
         } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );

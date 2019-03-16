@@ -100,7 +100,8 @@ public class MainWindowControler {
         }
     };
 
-    public void initialize(){
+    public void initialize()
+    {
         DisableButtons(true);
         engSentenceText.setOnKeyPressed(enterClick);
         plSentenceText.setOnKeyPressed(enterClick);
@@ -113,10 +114,10 @@ public class MainWindowControler {
                 updateFilteredData();
             }
         });
-
     }
 
-    private void updateFilteredData() {
+    private void updateFilteredData()
+    {
         filteredData.clear();
 
         for (FlashcardTableHelper p : data) {
@@ -128,7 +129,8 @@ public class MainWindowControler {
         reapplyTableSortOrder();
     }
 
-    private void reapplyTableSortOrder() {
+    private void reapplyTableSortOrder()
+    {
         ArrayList<TableColumn<FlashcardTableHelper, ?>> sortOrder = new ArrayList<>(flashcardsTable.getSortOrder());
         flashcardsTable.getSortOrder().clear();
         flashcardsTable.getSortOrder().addAll(sortOrder);
@@ -151,7 +153,6 @@ public class MainWindowControler {
 
         return false; // Does not match
     }
-
 
     public void RefreshTable()
     {

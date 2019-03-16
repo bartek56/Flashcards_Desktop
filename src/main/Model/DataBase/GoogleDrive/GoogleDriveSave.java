@@ -39,6 +39,8 @@ public class GoogleDriveSave extends Task<Boolean> {
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
+            String updateString = "update\n";
+            baos.write(updateString.getBytes(StandardCharsets.UTF_8));
             for (String line : list) {
                 baos.write(line.getBytes(StandardCharsets.UTF_8));
                 //baos.write('\n');

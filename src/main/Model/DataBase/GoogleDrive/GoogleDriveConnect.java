@@ -104,7 +104,6 @@ public class GoogleDriveConnect extends Task<Boolean> {
             String pageToken = null;
             fileId = null;
             do {
-
                 FileList result = service.files().list()
                         .setQ("mimeType='text/plain'")
                         .setSpaces("drive")

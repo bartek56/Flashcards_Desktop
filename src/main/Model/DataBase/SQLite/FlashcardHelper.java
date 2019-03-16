@@ -23,7 +23,6 @@ public class FlashcardHelper {
     
     public static void RenameCategory(String oldName, String newName)
     {
-
         try {
             String oldNameTable = oldName.replace(" ","_");
             String newNameTable = newName.replace(" ","_");
@@ -39,15 +38,12 @@ public class FlashcardHelper {
             Message("RenameCategory: "+ex+ " "+ex.getMessage());
         }
 
-
-
     }
 
     public static String GetFlashCardCategory(String id)
     {
 
         List <String> categoriesList = GetCategoriesWithoutSign();
-
 
         for (String category : categoriesList) {
 
@@ -57,9 +53,7 @@ public class FlashcardHelper {
                 ResultSet rs = stmt.executeQuery("SELECT idFlashcard FROM "+ category +" WHERE idFlashcard="+id+" ");
 
                 while (rs.next()) {
-
                     return category;
-
                 }
 
             } catch (Exception ex) {
@@ -88,12 +82,10 @@ public class FlashcardHelper {
                     category.add(column);
                 }
             }
-
         }
         catch (Exception ex)
         {
             System.err.println("GetFlashcardFromCategory: "+ex);
-
             Message("GetFlashcardFromCategory: "+ex+ " "+ex.getMessage());
         }
         return category;
@@ -117,7 +109,6 @@ public class FlashcardHelper {
                     category.add(column2);
                 }
             }
-
         }
         catch (Exception ex)
         {
@@ -371,7 +362,6 @@ public class FlashcardHelper {
     {
         try
         {
-
             String category2 = category.replace(" ","_");
 
             Statement statement = SQLiteJDBCDriverConnection.connection.createStatement();
@@ -520,8 +510,7 @@ public class FlashcardHelper {
         {
             String sql = "INSERT INTO flashcard(engWord, plWord, engSentence, plSentence) VALUES(?,?,?,?) ";
             PreparedStatement pstmt = SQLiteJDBCDriverConnection.connection.prepareStatement(sql);
-            //Statement pstm = SQLiteJDBCDriverConnection.connection.createStatement();
-            //SQLiteJDBCDriverConnection.connection.setAutoCommit(false);
+
             while (!engWord.isEmpty())
             {
 
@@ -535,8 +524,6 @@ public class FlashcardHelper {
 
             pstmt.executeBatch();
 
-            ///SQLiteJDBCDriverConnection.connection.commit();
-
             pstmt.close();
 
         } catch (Exception ex) {
@@ -547,7 +534,8 @@ public class FlashcardHelper {
 
     }
 
-    public static void AddFlashcardsToCategory(Queue<Integer> idFlashcardQueue, String category) {
+    public static void AddFlashcardsToCategory(Queue<Integer> idFlashcardQueue, String category)
+    {
 
         try
         {
@@ -555,25 +543,22 @@ public class FlashcardHelper {
             String sql = "INSERT INTO "+category+" (idFlashcard) VALUES(?)";
             PreparedStatement pstmt = SQLiteJDBCDriverConnection.connection.prepareStatement(sql);
 
-            //Statement pstmt = SQLiteJDBCDriverConnection.connection.createStatement();
             while (!idFlashcardQueue.isEmpty())
             {
                 pstmt.setInt(1, idFlashcardQueue.remove());
-                //pstmt.addBatch("INSERT INTO "+category+" (idFlashcard) VALUES("+idFlashcardQueue.remove()+")");
                 pstmt.addBatch();
             }
             pstmt.executeBatch();
             pstmt.close();
-            //SQLiteJDBCDriverConnection.connection.commit();
 
-            //pstmt.clearParameters();
         } catch (Exception ex) {
             System.err.println("AddFlashcardsToCategory: "+ ex +" "+ ex.getMessage());
             Message("AddFlashcardsToCategory: "+ ex );
         }
     }
 
-    public static void Commit() {
+    public static void Commit()
+    {
         try {
             SQLiteJDBCDriverConnection.connection.commit();
         } catch (SQLException e) {

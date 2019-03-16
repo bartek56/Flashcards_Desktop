@@ -37,9 +37,6 @@ public class ProgressWindowControler {
 
         lInfo.textProperty().bind(csvBackupRead.messageProperty());
 
-
-
-
         FlashcardHelper.SetAutoCommit(false);
         csvBackupRead.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED,(WorkerStateEvent t)->{
             bOk.setDisable(false);
@@ -51,7 +48,6 @@ public class ProgressWindowControler {
         });
 
         Thread thread = new Thread(csvBackupRead);
-        //thread.setDaemon(true);
         thread.start();
 
 
