@@ -36,9 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static Model.DataBase.SQLite.FlashcardHelper.*;
-import static Model.DataBase.SQLite.SQLiteJDBCDriverConnection.DATABASE_FILE_LOCATION;
-import static Model.DataBase.SQLite.SQLiteJDBCDriverConnection.DATABASE_FILE_NAME;
-import static Model.DataBase.SQLite.SQLiteJDBCDriverConnection.connect;
+import static Model.DataBase.SQLite.SQLiteJDBCDriverConnection.*;
 
 
 /**
@@ -76,8 +74,6 @@ public class MainWindowControler {
     public GridPane SearchBarGrid;
     public GridPane mainGrid;
     public RowConstraints row;
-
-
     private String actualLanguage;
 
 
@@ -244,7 +240,6 @@ public class MainWindowControler {
                 if (alert.getResult() == ButtonType.YES) {
                     AddFlashcardMain();
                 }
-
             }
         }
     }
@@ -273,12 +268,12 @@ public class MainWindowControler {
             primaryStage.getScene().setCursor(Cursor.DEFAULT);
             if(googleDriveSave.isSaved())
             {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Zapisano na Google Drive", ButtonType.OK);
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Saved Data in Google Drive", ButtonType.OK);
                 alert.showAndWait();
             }
             else
             {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "Nie można zapisać na Google Drive", ButtonType.OK);
+                Alert alert = new Alert(Alert.AlertType.ERROR, "can not save in Google Drive", ButtonType.OK);
                 alert.showAndWait();
             }
 
@@ -297,7 +292,6 @@ public class MainWindowControler {
         AddCategoryControler controller = fxmlLoader.<AddCategoryControler>getController();
         controller.setMainWindowController(this);
 
-
         Stage stage = new Stage();
 
         stage.setResizable(false);
@@ -307,7 +301,6 @@ public class MainWindowControler {
     }
 
     public void DeleteFlaschcard_Click(ActionEvent actionEvent) {
-
 
         FlashcardTableHelper flashcardTableHelper = flashcardsTable.getSelectionModel().getSelectedItem();
 
@@ -319,8 +312,6 @@ public class MainWindowControler {
             DeleteFlashcard(flashcardTableHelper.getId());
             UpdateRow(null);
         }
-
-
 
     }
 
@@ -367,12 +358,11 @@ public class MainWindowControler {
         this.primaryStage = primaryStage;
     }
 
-    public void Exit_Click(ActionEvent actionEvent) {
+    public void Exit_Click(ActionEvent actionEvent)
+    {
 
-        //if(GoogleDriveHelper.isOpen)
-        //{
-            Alert alert = new Alert(Alert.AlertType.NONE, "Save Changes ?", ButtonType.YES, ButtonType.NO,ButtonType.CANCEL);
-            alert.showAndWait();
+        Alert alert = new Alert(Alert.AlertType.NONE, "Save Changes ?", ButtonType.YES, ButtonType.NO,ButtonType.CANCEL);
+        alert.showAndWait();
 
             if (alert.getResult() == ButtonType.YES)
             {
@@ -388,18 +378,6 @@ public class MainWindowControler {
                 stage.close();
                 System.exit(0);
             }
-
-            /*
-        }
-        else
-        {
-            Stage stage = (Stage) cbFlashcardCategory.getScene().getWindow();
-            // do what you have to do
-            stage.close();
-            System.exit(0);
-        }
-*/
-
     }
 
     public void Language_Click(ActionEvent actionEvent) {
@@ -412,10 +390,10 @@ public class MainWindowControler {
             DATABASE_FILE_NAME="flashcardsEng.db";
             primaryStage.setTitle("FlashCard English");
 
-            lEnglishWord.setText("Słowo Eng:");
-            lEnglishSentence.setText("Zdanie Eng:");
-            engWordColumn.setText("Słowo Eng");
-            engSentenceColumn.setText("Zdanie Eng");
+            lEnglishWord.setText("Word Eng:");
+            lEnglishSentence.setText("Sentence Eng:");
+            engWordColumn.setText("Word Eng");
+            engSentenceColumn.setText("Sentemce Eng");
 
         }
         else if(de.isSelected())
@@ -425,10 +403,10 @@ public class MainWindowControler {
             DATABASE_FILE_NAME="flashcardsDe.db";
             primaryStage.setTitle("FlashCard German");
 
-            lEnglishWord.setText("Słowo De:");
-            lEnglishSentence.setText("Zdanie De:");
-            engWordColumn.setText("Słowo De");
-            engSentenceColumn.setText("Zdanie De");
+            lEnglishWord.setText("Word De:");
+            lEnglishSentence.setText("Sentemce De:");
+            engWordColumn.setText("Word De");
+            engSentenceColumn.setText("Sentemce De");
         }
         else if(fr.isSelected())
         {
@@ -437,17 +415,25 @@ public class MainWindowControler {
             DATABASE_FILE_NAME="flashcardsFr.db";
             primaryStage.setTitle("FlashCard French");
 
-            lEnglishWord.setText("Słowo Fr:");
-            lEnglishSentence.setText("Zdanie Fr:");
-            engWordColumn.setText("Słowo Fr");
-            engSentenceColumn.setText("Zdanie Fr");
+            lEnglishWord.setText("Word Fr:");
+            lEnglishSentence.setText("Sentemce Fr:");
+            engWordColumn.setText("Word Fr");
+            engSentenceColumn.setText("Sentemce Fr");
         }
 
 
         primaryStage.getScene().setCursor(Cursor.WAIT);
+        disconnect();
         connect(); // connect with Sqlite
         FlashcardHelper.CreateDefaultTables();
         FlashcardHelper.SetAutoCommit(false);
+
+        filteredData.clear();
+        filteredData.removeAll();
+        data.clear();
+        data.removeAll();
+        flashcardsTable.getItems().clear();
+        flashcardsTable.refresh();
 
 
         GoogleDriveConnect googleDriveConnect = new GoogleDriveConnect();
@@ -466,7 +452,7 @@ public class MainWindowControler {
             }
             else
             {
-                Message("Błąd odczytu danych z Google Drive");
+                Message("Error in reading data from Google Drive");
             }
             FlashcardHelper.SetAutoCommit(true);
         });
@@ -477,23 +463,6 @@ public class MainWindowControler {
 
     }
 
-    public void Refresh_Click()
-    {
-        /*
-        if(GoogleDriveHelper.error)
-        {
-            Message(GoogleDriveHelper.getErrorMessage());
-            DisableButtons(true);
-            GoogleDriveHelper.removeError();
-        }
-        else
-        {
-            DisableButtons(false);
-            ReadFromDataBase_Click();
-        }
-        */
-        //ReadFromDataBase_Click();
-    }
 
     public void DisableButtons(boolean isDisable){
         if(isDisable==false)
@@ -573,10 +542,7 @@ public class MainWindowControler {
             stage.setTitle("Wczytywanie");
             stage.setScene(new Scene(root1));
             stage.show();
-
         }
-
-
     }
 
     private void Message(String ex)
@@ -585,11 +551,6 @@ public class MainWindowControler {
         alert.showAndWait();
     }
 
-    public void SearchField_EditText(ActionEvent actionEvent) {
-
-        //System.out.println("fdf");
-
-    }
 
     public void SearchWord_Click(ActionEvent actionEvent) {
         if(mainGrid.getChildren().contains(SearchBarGrid)) {
@@ -601,23 +562,6 @@ public class MainWindowControler {
         {
             mainGrid.getChildren().add(SearchBarGrid);
         }
-    }
-
-    /*
-     if(mainGrid.getChildren().contains(SearchBarGrid)) {
-        mainGrid.getChildren().remove(SearchBarGrid);
-        tfSearch.setText("");
-        updateFilteredData();
-    }
-        else
-    {
-        mainGrid.getChildren().add(SearchBarGrid);
-    }
-    */
-
-    public String getActualLanguage()
-    {
-        return actualLanguage;
     }
 
     public Stage getPrimarystage()

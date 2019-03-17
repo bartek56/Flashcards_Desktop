@@ -111,9 +111,9 @@ public class EditWordController {
     {
         switch (actualLanguage)
         {
-            case "eng": lEngWord.setText("Słowo Eng:"); lEngSentence.setText("Zdanie Eng:"); break;
-            case "fr": lEngWord.setText("Słowo Fr:"); lEngSentence.setText("Zdanie Fr:"); break;
-            case "de": lEngWord.setText("Słowo De:"); lEngSentence.setText("Zdanie De:"); break;
+            case "eng": lEngWord.setText("Word Eng:"); lEngSentence.setText("Sentence Eng:"); break;
+            case "fr": lEngWord.setText("Word Fr:"); lEngSentence.setText("Sentence Fr:"); break;
+            case "de": lEngWord.setText("Word De:"); lEngSentence.setText("Sentence De:"); break;
         }
 
     }

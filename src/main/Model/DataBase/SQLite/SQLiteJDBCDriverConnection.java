@@ -17,6 +17,20 @@ public class SQLiteJDBCDriverConnection {
     public static boolean error=false;
     private static String errorMessage="";
 
+    public static void disconnect()
+    {
+        try {
+            if(connection!=null)
+            {
+                connection.close();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     public static void connect() {
 
         try {
@@ -39,16 +53,30 @@ public class SQLiteJDBCDriverConnection {
             Class.forName("org.sqlite.JDBC");
             File file = new File(DATABASE_FILE_LOCATION+""+DATABASE_FILE_NAME);
             if(file.exists())
+            {
                 file.delete();
+/*
+                if(check)
+                {
+                    System.out.println("true");
+
+                }
+                else
+                {
+                    System.out.println("false");
+                }
+*/
+            }
+
 
             connection = DriverManager.getConnection("jdbc:sqlite:"+DATABASE_FILE_LOCATION+""+DATABASE_FILE_NAME);
             System.out.println("Opened database successfully");
+
         } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             error=true;
             errorMessage+="SQL connect: "+e;
         }
     }
-
 
 }

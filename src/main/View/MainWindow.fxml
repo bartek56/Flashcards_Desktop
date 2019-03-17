@@ -34,8 +34,6 @@
             <MenuItem fx:id="bSaveFlashcardOnFile" onAction="#SaveOnFile_Click" text="Save on file" />
 
             <MenuItem fx:id="bReadFlashcardFromFile" onAction="#ReadFromFile_Click" text="Read from file" />
-            <MenuItem fx:id="bRefresh" onAction="#Refresh_Click" text="Pokaż w tabeli" />
-
 
             <MenuItem onAction="#Exit_Click" text="Exit" />
         </items>
@@ -63,12 +61,23 @@
             </items>
         </Menu>
 
+        <Menu text="Tools">
+
+            <items>
+            <MenuItem fx:id="bSearchWord" onAction="#SearchWord_Click" text="Search" >
+            <accelerator>
+                <KeyCodeCombination alt="UP" code="F" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+            </accelerator>
+            </MenuItem>
+            </items>
+        </Menu>
+
     </MenuBar>
 
     <GridPane fx:id="SearchBarGrid" nodeOrientation="RIGHT_TO_LEFT" prefHeight="0.0" prefWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
 
         <TextField fx:id="tfSearch" GridPane.columnIndex="0" />
-        <Label text="Wyszukiwarka" GridPane.columnIndex="1">
+        <Label text="Searching" GridPane.columnIndex="1">
          <GridPane.margin>
             <Insets left="20.0" right="20.0" />
          </GridPane.margin></Label>
@@ -90,11 +99,7 @@
                 <items>
                     <MenuItem onAction="#EditFlaschcard_Click" text="Edit Flashcard" />
                     <MenuItem onAction="#DeleteFlaschcard_Click" text="Delete Flashcard" />
-                    <MenuItem onAction="#SearchWord_Click" text="Search">
-                        <accelerator>
-                            <KeyCodeCombination alt="UP" code="F" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-                        </accelerator>
-                    </MenuItem>
+                    <MenuItem onAction="#SearchWord_Click" text="Search" />
                 </items>
             </ContextMenu>
         </contextMenu>
@@ -104,28 +109,28 @@
                     <PropertyValueFactory property="id" />
                 </cellValueFactory>
             </TableColumn>
-            <TableColumn fx:id="plWordColumn" text="Słowo PL">
+            <TableColumn fx:id="plWordColumn" text="Word PL">
                 <cellValueFactory>
                     <PropertyValueFactory property="plWord" />
                 </cellValueFactory>
             </TableColumn>
-            <TableColumn fx:id="engWordColumn" text="Słowo ENG">
+            <TableColumn fx:id="engWordColumn" text="Word Eng">
                 <cellValueFactory>
                     <PropertyValueFactory property="engWord" />
                 </cellValueFactory>
 
             </TableColumn>
-            <TableColumn fx:id="plSentenceColumn" text="Zdanie PL">
+            <TableColumn fx:id="plSentenceColumn" text="Sentence PL">
                 <cellValueFactory>
                     <PropertyValueFactory property="plSentence" />
                 </cellValueFactory>
             </TableColumn>
-            <TableColumn fx:id="engSentenceColumn" text="Zdanie ENG">
+            <TableColumn fx:id="engSentenceColumn" text="Sentence Eng">
                 <cellValueFactory>
                     <PropertyValueFactory property="engSentence" />
                 </cellValueFactory>
             </TableColumn>
-            <TableColumn fx:id="category" text="Kategoria">
+            <TableColumn fx:id="category" text="Category">
                 <cellValueFactory>
                     <PropertyValueFactory property="category" />
                 </cellValueFactory>
@@ -148,7 +153,7 @@
          <GridPane.margin>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </GridPane.margin></ComboBox>
-        <Label minWidth="60.0" text="Słowo PL:" GridPane.columnIndex="0" GridPane.rowIndex="1">
+        <Label minWidth="60.0" text="Word PL:" GridPane.columnIndex="0" GridPane.rowIndex="1">
          <GridPane.margin>
             <Insets right="5.0" />
          </GridPane.margin></Label>
@@ -157,7 +162,7 @@
             <Insets bottom="10.0" top="10.0" />
          </GridPane.margin></TextField>
 
-        <Label fx:id="lEnglishWord" minWidth="60.0" text="Słowo ang:" GridPane.columnIndex="3" GridPane.rowIndex="1">
+        <Label fx:id="lEnglishWord" minWidth="60.0" text="Word Eng:" GridPane.columnIndex="3" GridPane.rowIndex="1">
          <GridPane.margin>
             <Insets right="5.0" />
          </GridPane.margin></Label>
@@ -166,7 +171,7 @@
 
 
 
-        <Label minWidth="60.0" text="Zdanie PL:" GridPane.columnIndex="0" GridPane.rowIndex="2">
+        <Label minWidth="60.0" text="Sentence PL:" GridPane.columnIndex="0" GridPane.rowIndex="2">
          <GridPane.margin>
             <Insets right="5.0" />
          </GridPane.margin></Label>
@@ -176,7 +181,7 @@
          </GridPane.margin></TextArea>
 
 
-        <Label fx:id="lEnglishSentence" minWidth="65.0" text="Zdanie ang:" GridPane.columnIndex="3" GridPane.rowIndex="2">
+        <Label fx:id="lEnglishSentence" minWidth="65.0" text="Sentence Eng:" GridPane.columnIndex="3" GridPane.rowIndex="2">
          <GridPane.margin>
             <Insets right="5.0" />
          </GridPane.margin></Label>
@@ -186,7 +191,7 @@
             <Insets bottom="10.0" top="10.0" />
          </GridPane.margin></TextArea>
 
-        <Button fx:id="bAddFlashcard" alignment="CENTER" contentDisplay="CENTER" onAction="#AddFlashcard_Click" text="Dodaj" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+        <Button fx:id="bAddFlashcard" alignment="CENTER" contentDisplay="CENTER" onAction="#AddFlashcard_Click" text="Add Flashcard" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
          <GridPane.margin>
             <Insets bottom="10.0" top="10.0" />
          </GridPane.margin></Button>
