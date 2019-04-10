@@ -259,6 +259,21 @@ public class MainWindowControler {
 
     }
 
+    public void ExportToXls_Click(ActionEvent actionEvent) throws IOException
+    {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/View/ExportToXlsFile.fxml"));
+        Parent root1 = (Parent) fxmlLoader.load();
+        ExportToXlsFileControler controller = fxmlLoader.<ExportToXlsFileControler>getController();
+        controller.setMainWindowController(this);
+
+        Stage stage = new Stage();
+        stage.setResizable(false);
+        stage.setTitle("Export to XLS");
+        stage.setScene(new Scene(root1));
+        stage.setResizable(false);
+        stage.show();
+    }
+
     public void SaveOnDataBase_Click(ActionEvent actionEvent) {
 
         GoogleDriveSave googleDriveSave = new GoogleDriveSave(service,fileId);

@@ -35,6 +35,8 @@
 
             <MenuItem fx:id="bReadFlashcardFromFile" onAction="#ReadFromFile_Click" text="Read from file" />
 
+            <MenuItem fx:id="bExportToXls" onAction="#ExportToXls_Click" text="Export to Xls" />
+
             <MenuItem onAction="#Exit_Click" text="Exit" />
         </items>
 
