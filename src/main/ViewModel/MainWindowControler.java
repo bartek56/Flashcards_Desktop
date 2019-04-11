@@ -265,6 +265,7 @@ public class MainWindowControler {
         Parent root1 = (Parent) fxmlLoader.load();
         ExportToXlsFileControler controller = fxmlLoader.<ExportToXlsFileControler>getController();
         controller.setMainWindowController(this);
+        controller.Load();
 
         Stage stage = new Stage();
         stage.setResizable(false);
@@ -306,6 +307,7 @@ public class MainWindowControler {
 
         AddCategoryControler controller = fxmlLoader.<AddCategoryControler>getController();
         controller.setMainWindowController(this);
+
 
         Stage stage = new Stage();
 
